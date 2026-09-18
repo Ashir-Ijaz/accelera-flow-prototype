@@ -12,6 +12,7 @@ const ServicesPage = lazy(() => import('./pages/ServicesPage'))
 const ResultsPage = lazy(() => import('./pages/ResultsPage'))
 const AboutPage = lazy(() => import('./pages/AboutPage'))
 const ContactPage = lazy(() => import('./pages/ContactPage'))
+const PromotePage = lazy(() => import('./pages/PromotePage'))
 const NotFoundPage = lazy(() => import('./pages/NotFoundPage'))
 
 void import('./pages/HomePage')
@@ -32,6 +33,8 @@ function AppRoutes() {
           <Route path="/results" element={<ResultsPage />} />
           <Route path="/about" element={<AboutPage />} />
           <Route path="/contact" element={<ContactPage />} />
+          <Route path="/promote" element={<PromotePage />} />
+          <Route path="/promote/:platform" element={<PromotePage />} />
           <Route path="*" element={<NotFoundPage />} />
         </Routes>
       </Suspense>

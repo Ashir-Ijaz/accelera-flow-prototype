@@ -7,8 +7,8 @@ import { TestimonialPlaceholder } from '../components/ui/TestimonialPlaceholder'
 import { MagneticButton } from '../components/animation/MagneticButton'
 import { OriginSection } from '../components/sections/OriginSection'
 import { PresenceSection } from '../components/sections/PresenceSection'
-import { TeamSection } from '../components/sections/TeamSection'
 import { FounderSection } from '../components/sections/FounderSection'
+import { JobsSection } from '../components/sections/JobsSection'
 import { PageHero } from '../components/layout/PageHero'
 import { Reveal } from '../components/animation/Reveal'
 
@@ -26,8 +26,8 @@ export default function AboutPage() {
       />
       <OriginSection />
       <PresenceSection />
-      <TeamSection />
       <FounderSection />
+      <JobsSection />
       <section className="section">
         <div className="section__inner">
           <p className="section-heading__kicker">Model</p>

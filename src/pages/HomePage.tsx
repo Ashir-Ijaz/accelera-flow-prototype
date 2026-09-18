@@ -3,6 +3,7 @@ import { ManifestoSection } from '../components/sections/ManifestoSection'
 import { BrandsOrbitSection } from '../components/sections/BrandsOrbitSection'
 import { ServicesStorySection } from '../components/sections/ServicesStorySection'
 import { ProcessSection } from '../components/sections/ProcessSection'
+import { PromotionCtaSection } from '../components/sections/PromotionCtaSection'
 import { FinalCtaSection } from '../components/sections/FinalCtaSection'
 import { pageMeta } from '../data/meta'
 import { useDocumentMeta } from '../hooks/useDocumentMeta'
@@ -18,6 +19,7 @@ export default function HomePage() {
       <BrandsOrbitSection />
       <ServicesStorySection />
       <ProcessSection />
+      <PromotionCtaSection />
       <FinalCtaSection />
     </>
   )

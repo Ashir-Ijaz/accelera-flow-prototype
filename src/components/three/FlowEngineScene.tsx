@@ -2,7 +2,6 @@ import { useMemo, useRef } from 'react'
 import type { MutableRefObject } from 'react'
 import { useFrame } from '@react-three/fiber'
 import { Color, Group, PointLight } from 'three'
-import { Float } from '@react-three/drei'
 import { FlowCameraController } from './FlowCameraController'
 import { FlowParticles } from './FlowParticles'
 import { FieldMotes } from './FieldMotes'
@@ -27,9 +26,9 @@ export function FlowEngineScene({ progressRef, reduced, isMobile, emphasized }: 
   const orangeLight = useRef<PointLight>(null)
   const amberLight = useRef<PointLight>(null)
   const curves = useMemo(() => createFlowCurves(), [])
-  const segments = isMobile ? 24 : 40
-  const particleCount = isMobile ? 80 : 160
-  const moteCount = isMobile ? 56 : 110
+  const segments = isMobile ? 16 : 28
+  const particleCount = isMobile ? 48 : 90
+  const moteCount = isMobile ? 32 : 64
   const orange = useMemo(() => new Color('#ff6a00'), [])
   const red = useMemo(() => new Color('#f04400'), [])
   const amber = useMemo(() => new Color('#ff9400'), [])
@@ -44,18 +43,9 @@ export function FlowEngineScene({ progressRef, reduced, isMobile, emphasized }: 
     group.rotation.y = p * 0.55 + Math.sin(t * 0.26) * 0.06
     group.rotation.x = Math.sin(p * Math.PI) * 0.12 + Math.sin(t * 0.18) * 0.03
     group.rotation.z = Math.sin(t * 0.2) * 0.028 + Math.sin(p * Math.PI * 2) * 0.08
-    group.scale.setScalar(1)
-
-    const glow = 0.78 + Math.sin(t * 1.55) * 0.2
-    group.children.forEach((child) => {
-      const material = 'material' in child ? child.material : null
-      if (material && typeof material === 'object' && 'emissiveIntensity' in material && !('map' in material && material.map)) {
-        material.emissiveIntensity = glow
-      }
-    })
 
     if (orangeLight.current) {
-      orangeLight.current.intensity = 28 + Math.sin(t * 1.7) * 7
+      orangeLight.current.intensity = 46 + Math.sin(t * 1.7) * 10
       orangeLight.current.position.set(
         -2.4 + Math.sin(t * 0.45) * 2.4,
         2.2 + Math.cos(t * 0.38) * 1.2,
@@ -63,7 +53,7 @@ export function FlowEngineScene({ progressRef, reduced, isMobile, emphasized }: 
       )
     }
     if (amberLight.current) {
-      amberLight.current.intensity = 12 + Math.cos(t * 1.25) * 4
+      amberLight.current.intensity = 22 + Math.cos(t * 1.25) * 6
       amberLight.current.position.set(
         Math.sin(t * 0.34) * 4.2,
         1.2 + Math.sin(t * 0.52) * 1.6,
@@ -74,14 +64,14 @@ export function FlowEngineScene({ progressRef, reduced, isMobile, emphasized }: 
 
   return (
     <>
-      <color attach="background" args={['#211d1e']} />
-      <fog attach="fog" args={['#211d1e', 22, 58]} />
-      <ambientLight intensity={0.46} />
-      <pointLight ref={orangeLight} position={[-2.4, 2.2, 1]} color={orange} intensity={28} distance={26} />
+      <color attach="background" args={['#160e0c']} />
+      <fog attach="fog" args={['#160e0c', 34, 78]} />
+      <ambientLight intensity={0.78} />
+      <pointLight ref={orangeLight} position={[-2.4, 2.2, 1]} color={orange} intensity={46} distance={32} />
       {isMobile ? null : (
         <>
-          <pointLight position={[3.4, 4.2, 3]} color={red} intensity={16} distance={24} />
-          <pointLight ref={amberLight} position={[0, 1.2, 7]} color={amber} intensity={12} distance={20} />
+          <pointLight position={[3.4, 4.2, 3]} color={red} intensity={26} distance={28} />
+          <pointLight ref={amberLight} position={[0, 1.2, 7]} color={amber} intensity={22} distance={26} />
         </>
       )}
       <FlowCameraController progressRef={progressRef} reduced={reduced} />
@@ -92,42 +82,34 @@ export function FlowEngineScene({ progressRef, reduced, isMobile, emphasized }: 
             <meshStandardMaterial
               color={index === 1 ? '#f04400' : '#ff6a00'}
               emissive={index === 2 ? '#ff9400' : '#ff6a00'}
-              emissiveIntensity={0.9}
-              roughness={0.32}
-              metalness={0.12}
+              emissiveIntensity={1.55}
+              roughness={0.22}
+              metalness={0.08}
             />
           </mesh>
         ))}
         <FlowParticles curves={curves} count={particleCount} />
         <FieldMotes count={moteCount} />
-        <Float speed={1.45} rotationIntensity={0.38} floatIntensity={0.4}>
-          <mesh rotation={[Math.PI / 2, 0, 0]}>
+        <mesh rotation={[Math.PI / 2, 0, 0]}>
             <torusGeometry args={[1.2, 0.03, 10, 40]} />
-            <meshStandardMaterial color="#ff6a00" emissive="#ff6a00" emissiveIntensity={1.15} />
+            <meshStandardMaterial color="#ff6a00" emissive="#ff6a00" emissiveIntensity={1.85} />
           </mesh>
           <mesh rotation={[Math.PI / 2.6, 0.4, 0.2]} position={[0.12, 0.16, 0]}>
             <torusGeometry args={[0.74, 0.022, 8, 32, Math.PI * 1.2]} />
-            <meshStandardMaterial color="#f04400" emissive="#f04400" emissiveIntensity={0.95} />
+            <meshStandardMaterial color="#f04400" emissive="#f04400" emissiveIntensity={1.55} />
           </mesh>
-        </Float>
-        <Float speed={0.9} rotationIntensity={0.5} floatIntensity={0.55}>
-          <mesh position={[-6.4, 2.2, 5.2]} rotation={[0.6, 0.4, 0.2]}>
+        <mesh position={[-6.4, 2.2, 5.2]} rotation={[0.6, 0.4, 0.2]}>
             <torusGeometry args={[1.8, 0.018, 8, 32]} />
-            <meshStandardMaterial color="#ff9400" emissive="#ff9400" emissiveIntensity={0.7} />
+            <meshStandardMaterial color="#ff9400" emissive="#ff9400" emissiveIntensity={1.25} />
           </mesh>
-        </Float>
-        <Float speed={1.1} rotationIntensity={0.42} floatIntensity={0.5}>
-          <mesh position={[6.8, -0.6, 2.4]} rotation={[1.2, -0.3, 0.5]}>
+        <mesh position={[6.8, -0.6, 2.4]} rotation={[1.2, -0.3, 0.5]}>
             <torusGeometry args={[1.45, 0.016, 8, 32]} />
-            <meshStandardMaterial color="#f04400" emissive="#f04400" emissiveIntensity={0.65} />
+            <meshStandardMaterial color="#f04400" emissive="#f04400" emissiveIntensity={1.2} />
           </mesh>
-        </Float>
-        <Float speed={0.75} rotationIntensity={0.35} floatIntensity={0.7}>
-          <mesh position={[-1.2, 3.4, -4.8]} rotation={[0.2, 1.1, 0.4]}>
+        <mesh position={[-1.2, 3.4, -4.8]} rotation={[0.2, 1.1, 0.4]}>
             <torusGeometry args={[2.2, 0.014, 8, 36]} />
-            <meshStandardMaterial color="#ff6a00" emissive="#ff6a00" emissiveIntensity={0.55} />
+            <meshStandardMaterial color="#ff6a00" emissive="#ff6a00" emissiveIntensity={1.1} />
           </mesh>
-        </Float>
         {contentScreens.map((screen) => (
           <ContentScreen3D
             key={screen.label}

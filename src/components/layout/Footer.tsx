@@ -40,13 +40,14 @@ export function Footer() {
                 {item.label}
               </Link>
             ))}
+            <Link to="/promote">Promotion</Link>
           </div>
         </div>
         <div>
           <h2>Platforms</h2>
           <div className="footer__platforms">
-            <span>Instagram</span>
-            <span>YouTube</span>
+            <Link to="/promote/instagram">Instagram</Link>
+            <Link to="/promote/youtube">YouTube</Link>
           </div>
           <h2 style={{ marginTop: '1.4rem' }}>Newsletter prototype</h2>
           {newsletter === 'idle' ? (

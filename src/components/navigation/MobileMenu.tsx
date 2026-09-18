@@ -2,7 +2,7 @@ import { useEffect } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
 import { NavLink, useLocation } from 'react-router-dom'
 import { X } from 'lucide-react'
-import { navItems, primaryCta } from '../../data/navigation'
+import { navItems, primaryCta, promoteCta } from '../../data/navigation'
 import { useLockedBody } from '../../hooks/useLockedBody'
 import { useLenisInstance } from '../../hooks/useLenisInstance'
 import { MagneticButton } from '../animation/MagneticButton'
@@ -71,9 +71,14 @@ export function MobileMenu({ open, onClose }: MobileMenuProps) {
               </motion.div>
             ))}
           </nav>
-          <MagneticButton to={primaryCta.path} className="btn btn--primary mobile-menu__cta">
-            {primaryCta.label}
-          </MagneticButton>
+          <div className="mobile-menu__ctas">
+            <MagneticButton to={promoteCta.path} className="btn btn--promote mobile-menu__cta">
+              {promoteCta.label}
+            </MagneticButton>
+            <MagneticButton to={primaryCta.path} className="btn btn--primary mobile-menu__cta">
+              {primaryCta.label}
+            </MagneticButton>
+          </div>
         </motion.div>
       ) : null}
     </AnimatePresence>

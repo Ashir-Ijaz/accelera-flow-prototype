@@ -19,3 +19,8 @@ export const primaryCta = {
   label: 'Start a project',
   path: '/contact',
 }
+
+export const promoteCta = {
+  label: 'Promotion',
+  path: '/promote',
+}

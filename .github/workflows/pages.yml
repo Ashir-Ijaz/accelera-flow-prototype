@@ -19,6 +19,8 @@ jobs:
     runs-on: ubuntu-latest
     env:
       BASE_PATH: /accelera-flow-prototype/
+      VITE_INBOX_EMAIL: ${{ secrets.VITE_INBOX_EMAIL }}
+      VITE_WEB3FORMS_ACCESS_KEY: ${{ secrets.VITE_WEB3FORMS_ACCESS_KEY }}
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4

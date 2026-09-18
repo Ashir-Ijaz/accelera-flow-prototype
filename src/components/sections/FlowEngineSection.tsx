@@ -19,18 +19,19 @@ export function FlowEngineSection() {
   const stageKeyRef = useRef(flowStages[0].key)
   const [stage, setStage] = useState(flowStages[0])
   const [active, setActive] = useState(true)
+  const pinRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
-    const node = sectionRef.current
+    const node = pinRef.current
     if (!node) return
 
     const sync = () => {
       const rect = node.getBoundingClientRect()
-      const near = rect.bottom > -window.innerHeight * 0.35 && rect.top < window.innerHeight * 1.35
+      const near = rect.bottom > 0 && rect.top < window.innerHeight
       setActive(near && document.visibilityState === 'visible')
     }
 
-    const observer = new IntersectionObserver(sync, { rootMargin: '35% 0px', threshold: 0 })
+    const observer = new IntersectionObserver(sync, { rootMargin: '12% 0px', threshold: 0 })
     observer.observe(node)
     document.addEventListener('visibilitychange', sync)
     sync()
@@ -81,7 +82,7 @@ export function FlowEngineSection() {
       className={`flow-engine${isMobile ? ' flow-engine--mobile' : ''}`}
       aria-label="Flow Engine"
     >
-      <div className="flow-engine__pin">
+      <div ref={pinRef} className="flow-engine__pin">
         <WebGLErrorBoundary>
           <Suspense fallback={<div className="flow-engine__canvas" />}>
             <FlowEngineCanvas

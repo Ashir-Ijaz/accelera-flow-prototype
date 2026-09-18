@@ -16,7 +16,7 @@ export function FlowParticles({ curves, count }: FlowParticlesProps) {
     () =>
       curves.map((curve) => {
         const points: Vector3[] = []
-        const steps = 72
+        const steps = 40
         for (let i = 0; i <= steps; i += 1) {
           points.push(curve.getPoint(i / steps))
         }
@@ -25,7 +25,11 @@ export function FlowParticles({ curves, count }: FlowParticlesProps) {
     [curves],
   )
 
+  const skip = useRef(false)
+
   useFrame((state) => {
+    skip.current = !skip.current
+    if (skip.current) return
     const mesh = meshRef.current
     if (!mesh) return
     const time = state.clock.elapsedTime

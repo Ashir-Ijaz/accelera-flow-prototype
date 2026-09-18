@@ -12,24 +12,28 @@ export function createScreenTexture(label: string, kicker = 'Flow') {
   const ctx = canvas.getContext('2d')
   if (!ctx) return new CanvasTexture(canvas)
 
-  ctx.fillStyle = '#373233'
+  ctx.fillStyle = '#2a1810'
   ctx.fillRect(0, 0, WIDTH, HEIGHT)
-  ctx.fillStyle = '#211D1E'
+  const wash = ctx.createLinearGradient(0, 0, WIDTH, HEIGHT)
+  wash.addColorStop(0, '#4a1c08')
+  wash.addColorStop(0.45, '#21110c')
+  wash.addColorStop(1, '#3a1406')
+  ctx.fillStyle = wash
   ctx.fillRect(16, 16, WIDTH - 32, HEIGHT - 32)
 
   const accent = palette[label.length % palette.length] ?? '#FF6A00'
   ctx.fillStyle = accent
-  ctx.fillRect(16, 16, WIDTH - 32, 10)
+  ctx.fillRect(16, 16, WIDTH - 32, 14)
 
-  ctx.fillStyle = '#FF9400'
+  ctx.fillStyle = '#FFB14A'
   ctx.font = '700 22px Manrope, sans-serif'
   ctx.fillText(kicker.toUpperCase(), 36, 68)
 
-  ctx.fillStyle = '#F5F3F1'
+  ctx.fillStyle = '#FFF6EE'
   ctx.font = '700 48px "Space Grotesk", sans-serif'
   wrapText(ctx, label, 36, 128, WIDTH - 80, 54)
 
-  ctx.fillStyle = 'rgba(255,106,0,0.18)'
+  ctx.fillStyle = 'rgba(255,148,0,0.55)'
   ctx.fillRect(36, HEIGHT - 48, 160, 6)
 
   const texture = new CanvasTexture(canvas)

@@ -29,7 +29,22 @@ export const pageMeta = {
   contact: {
     title: 'Start a project — Accelera Flow LTD',
     description:
-      'Tell Accelera Flow what you want to grow. This prototype enquiry form captures details locally and does not send externally yet.',
+      'Tell Accelera Flow what you want to grow. Project enquiries are emailed to the studio with pricing and next steps to follow.',
+  },
+  promote: {
+    title: 'Promotion — Accelera Flow LTD',
+    description:
+      'Choose YouTube or Instagram promotion with Accelera Flow. Send a brief and receive pricing and charges by email.',
+  },
+  promoteYoutube: {
+    title: 'YouTube promotion — Accelera Flow LTD',
+    description:
+      'Request YouTube promotion from Accelera Flow. Describe the brief and receive pricing by email.',
+  },
+  promoteInstagram: {
+    title: 'Instagram promotion — Accelera Flow LTD',
+    description:
+      'Request Instagram story, feed, reel or permanent post promotion from Accelera Flow. Receive pricing by email.',
   },
   notFound: {
     title: 'Page not found — Accelera Flow LTD',

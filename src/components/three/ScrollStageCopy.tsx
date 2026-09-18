@@ -27,12 +27,12 @@ export function ScrollStageCopy({ stage }: ScrollStageCopyProps) {
           <h2>{stage.title}</h2>
           {stage.key === 'arrival' || stage.key === 'resolution' ? (
             <div className="stage-copy__actions">
-              <MagneticButton to="/contact">Start a project</MagneticButton>
               {stage.key === 'arrival' ? (
-                <MagneticButton to="/brands" className="btn btn--ghost">
-                  Explore the flow
+                <MagneticButton to="/promote" className="btn btn--promote">
+                  Promotion
                 </MagneticButton>
               ) : null}
+              <MagneticButton to="/contact">Start a project</MagneticButton>
             </div>
           ) : null}
         </motion.div>

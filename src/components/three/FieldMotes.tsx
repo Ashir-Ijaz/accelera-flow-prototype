@@ -22,7 +22,11 @@ export function FieldMotes({ count }: FieldMotesProps) {
     [count],
   )
 
+  const skip = useRef(false)
+
   useFrame((state) => {
+    skip.current = !skip.current
+    if (skip.current) return
     const mesh = meshRef.current
     if (!mesh) return
     const time = state.clock.elapsedTime
@@ -42,7 +46,7 @@ export function FieldMotes({ count }: FieldMotesProps) {
   return (
     <instancedMesh ref={meshRef} args={[undefined, undefined, count]} frustumCulled={false}>
       <sphereGeometry args={[1, 6, 6]} />
-      <meshBasicMaterial color={color} blending={AdditiveBlending} transparent opacity={0.42} depthWrite={false} />
+      <meshBasicMaterial color={color} blending={AdditiveBlending} transparent opacity={0.82} depthWrite={false} />
     </instancedMesh>
   )
 }

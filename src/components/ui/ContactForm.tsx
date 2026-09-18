@@ -3,6 +3,8 @@ import { useForm } from 'react-hook-form'
 import { z } from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { MagneticButton } from '../animation/MagneticButton'
+import { submitInbox } from '../../lib/submitInbox'
+import { FormSuccess } from './FormSuccess'
 
 const serviceOptions = [
   'Instagram Page Management',
@@ -24,7 +26,8 @@ const enquirySchema = z.object({
 type EnquiryValues = z.infer<typeof enquirySchema>
 
 export function ContactForm() {
-  const [status, setStatus] = useState<'idle' | 'saving' | 'saved'>('idle')
+  const [status, setStatus] = useState<'idle' | 'sending' | 'sent'>('idle')
+  const [sendError, setSendError] = useState('')
   const {
     register,
     handleSubmit,
@@ -41,38 +44,44 @@ export function ContactForm() {
     },
   })
 
-  const onSubmit = (values: EnquiryValues) => {
-    setStatus('saving')
-    window.setTimeout(() => {
-      window.localStorage.setItem('accelera-flow-enquiry', JSON.stringify(values))
-      setStatus('saved')
-    }, 700)
+  const onSubmit = async (values: EnquiryValues) => {
+    setSendError('')
+    setStatus('sending')
+    try {
+      await submitInbox({
+        subject: `Project enquiry — ${values.name}`,
+        kind: 'project',
+        fields: {
+          name: values.name,
+          email: values.email,
+          brand: values.brand,
+          service: values.service,
+          goals: values.goals,
+        },
+      })
+      setStatus('sent')
+    } catch (error) {
+      setStatus('idle')
+      setSendError(error instanceof Error ? error.message : 'The enquiry could not be sent.')
+    }
   }
 
-  if (status === 'saved') {
+  if (status === 'sent') {
     return (
-      <div className="form-success" role="status">
-        <h2>Stored locally for this prototype</h2>
-        <p>
-          This prototype form does not send externally. Your details were saved in this browser only, and no
-          message was delivered to Accelera Flow.
-        </p>
-        <MagneticButton
-          className="btn btn--primary"
-          onClick={() => {
-            reset()
-            setStatus('idle')
-          }}
-        >
-          Reset form
-        </MagneticButton>
-      </div>
+      <FormSuccess
+        title="Enquiry received"
+        body="You will receive an email with the next details for this project."
+        actionLabel="Send another enquiry"
+        onReset={() => {
+          reset()
+          setStatus('idle')
+        }}
+      />
     )
   }
 
   return (
     <form className="form" onSubmit={handleSubmit(onSubmit)} noValidate>
-      <p className="note">This prototype form does not yet send externally.</p>
       <div className="field">
         <label htmlFor="name">Your name</label>
         <input id="name" autoComplete="name" {...register('name')} />
@@ -104,8 +113,9 @@ export function ContactForm() {
         <textarea id="goals" {...register('goals')} />
         {errors.goals ? <p className="field-error">{errors.goals.message}</p> : null}
       </div>
-      <MagneticButton type="submit" disabled={status === 'saving'}>
-        {status === 'saving' ? 'Saving locally…' : 'Submit enquiry'}
+      {sendError ? <p className="field-error">{sendError}</p> : null}
+      <MagneticButton type="submit" disabled={status === 'sending'}>
+        {status === 'sending' ? 'Sending…' : 'Submit enquiry'}
       </MagneticButton>
     </form>
   )

@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useState } from 'react'
 import { NavLink } from 'react-router-dom'
 import { Menu } from 'lucide-react'
-import { navItems, primaryCta } from '../../data/navigation'
+import { navItems, primaryCta, promoteCta } from '../../data/navigation'
 import { BrandLogo } from '../ui/BrandLogo'
 import { MagneticButton } from '../animation/MagneticButton'
 import { MobileMenu } from './MobileMenu'
@@ -36,9 +36,14 @@ export function Navigation() {
               </NavLink>
             ))}
           </nav>
-          <MagneticButton to={primaryCta.path} className="btn btn--primary nav__cta">
-            {primaryCta.label}
-          </MagneticButton>
+          <div className="nav__ctas">
+            <MagneticButton to={promoteCta.path} className="btn btn--promote nav__cta">
+              {promoteCta.label}
+            </MagneticButton>
+            <MagneticButton to={primaryCta.path} className="btn btn--primary nav__cta">
+              {primaryCta.label}
+            </MagneticButton>
+          </div>
           <button
             type="button"
             className="nav__menu-btn"

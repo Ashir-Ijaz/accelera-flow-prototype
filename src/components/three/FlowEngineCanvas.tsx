@@ -22,12 +22,13 @@ export function FlowEngineCanvas({
   return (
     <div className="flow-engine__canvas" aria-hidden="true">
       <Canvas
-        dpr={isMobile ? 1 : [1, 1.25]}
+        dpr={isMobile ? 1 : [1, 1.15]}
         gl={{
-          antialias: !isMobile,
+          antialias: false,
           alpha: false,
           powerPreference: 'high-performance',
           stencil: false,
+          toneMappingExposure: 1.45,
         }}
         camera={{ fov: 41, near: 0.1, far: 120, position: [0.16, 2.82, 16.2] }}
         frameloop={active ? 'always' : 'demand'}

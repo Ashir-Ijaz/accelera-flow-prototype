@@ -8,8 +8,8 @@
   --white: #f5f3f1;
   --muted: #a8a4a5;
   --divider: rgba(255, 255, 255, 0.1);
-  --orange-soft: rgba(255, 106, 0, 0.16);
-  --orange-glow: rgba(255, 106, 0, 0.38);
+  --orange-soft: rgba(255, 106, 0, 0.28);
+  --orange-glow: rgba(255, 106, 0, 0.58);
   --font-heading: 'Space Grotesk', 'Avenir Next', 'Segoe UI', sans-serif;
   --font-body: 'Manrope', 'Segoe UI', sans-serif;
   --space: clamp(1.1rem, 2.4vw, 2rem);

@@ -6,6 +6,7 @@ export type PresenceDesk = {
   lng: number
   lat: number
   label: 'left' | 'right'
+  people: { name: string; role: string }[]
 }
 
 export const presenceDesks: PresenceDesk[] = [
@@ -17,6 +18,11 @@ export const presenceDesks: PresenceDesk[] = [
     lng: 67.0,
     lat: 24.86,
     label: 'left',
+    people: [
+      { name: 'Aoun Muhammad', role: 'Founder' },
+      { name: 'Hira', role: 'Script & research' },
+      { name: 'Sana', role: 'Short-form video' },
+    ],
   },
   {
     id: 'lahore',
@@ -26,6 +32,7 @@ export const presenceDesks: PresenceDesk[] = [
     lng: 74.36,
     lat: 31.52,
     label: 'right',
+    people: [{ name: 'Daniyal', role: 'Design' }],
   },
   {
     id: 'london',
@@ -35,6 +42,7 @@ export const presenceDesks: PresenceDesk[] = [
     lng: -0.13,
     lat: 51.51,
     label: 'left',
+    people: [{ name: 'Bilal', role: 'Publishing' }],
   },
   {
     id: 'lagos',
@@ -44,6 +52,7 @@ export const presenceDesks: PresenceDesk[] = [
     lng: 3.38,
     lat: 6.52,
     label: 'right',
+    people: [{ name: 'Yusuf', role: 'Conversations' }],
   },
   {
     id: 'manila',
@@ -53,6 +62,7 @@ export const presenceDesks: PresenceDesk[] = [
     lng: 120.98,
     lat: 14.6,
     label: 'left',
+    people: [{ name: 'Amna', role: 'Community' }],
   },
   {
     id: 'sao-paulo',
@@ -62,5 +72,6 @@ export const presenceDesks: PresenceDesk[] = [
     lng: -46.63,
     lat: -23.55,
     label: 'right',
+    people: [{ name: 'Noor', role: 'Growth' }],
   },
 ]

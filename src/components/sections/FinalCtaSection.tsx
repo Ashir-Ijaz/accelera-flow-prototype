@@ -11,6 +11,9 @@ export function FinalCtaSection() {
           <p className="section-heading__kicker">Next step</p>
           <h2 id="final-cta-title">Let’s build something worth sharing.</h2>
           <div className="stage-copy__actions">
+            <MagneticButton to="/promote" className="btn btn--promote">
+              Promotion
+            </MagneticButton>
             <MagneticButton to="/contact">Start a project</MagneticButton>
             <MagneticButton to="/brands" className="btn btn--ghost">
               Explore our brands

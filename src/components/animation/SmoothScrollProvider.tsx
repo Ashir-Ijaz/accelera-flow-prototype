@@ -50,7 +50,7 @@ export function SmoothScrollProvider({ children }: SmoothScrollProviderProps) {
     }
 
     gsap.ticker.add(tick)
-    gsap.ticker.lagSmoothing(0)
+    gsap.ticker.lagSmoothing(300, 33)
 
     const refresh = () => ScrollTrigger.refresh()
     window.addEventListener('load', refresh)
