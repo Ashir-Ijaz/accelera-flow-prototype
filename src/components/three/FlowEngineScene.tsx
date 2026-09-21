@@ -3,11 +3,13 @@ import type { MutableRefObject } from 'react'
 import { useFrame } from '@react-three/fiber'
 import { Color, Group, PointLight } from 'three'
 import { FlowCameraController } from './FlowCameraController'
+import { FlowParticles } from './FlowParticles'
 import { FieldMotes } from './FieldMotes'
 import { ContentScreen3D } from './ContentScreen3D'
 import {
   channelScreens,
   contentScreens,
+  createFlowCurves,
   teamPositions,
   type MutableProgress,
 } from './flowPaths'
@@ -32,6 +34,9 @@ export function FlowEngineScene({ progressRef, reduced, isMobile, activeBoard }:
   const groupRef = useRef<Group>(null)
   const orangeLight = useRef<PointLight>(null)
   const amberLight = useRef<PointLight>(null)
+  const curves = useMemo(() => createFlowCurves(), [])
+  const segments = isMobile ? 16 : 28
+  const particleCount = isMobile ? 48 : 90
   const moteCount = isMobile ? 32 : 64
   const orange = useMemo(() => new Color('#ff6a00'), [])
   const red = useMemo(() => new Color('#f04400'), [])
@@ -80,6 +85,41 @@ export function FlowEngineScene({ progressRef, reduced, isMobile, activeBoard }:
       )}
       <FlowCameraController progressRef={progressRef} reduced={reduced} />
       <group ref={groupRef}>
+        <group position={[0, -3.2, -5.4]} scale={0.82}>
+          {curves.map((curve, index) => (
+            <mesh key={index}>
+              <tubeGeometry args={[curve, segments, index === 1 ? 0.065 : 0.085, 6, false]} />
+              <meshStandardMaterial
+                color={index === 1 ? '#f04400' : '#ff6a00'}
+                emissive={index === 2 ? '#ff9400' : '#ff6a00'}
+                emissiveIntensity={1.55}
+                roughness={0.22}
+                metalness={0.08}
+              />
+            </mesh>
+          ))}
+          <FlowParticles curves={curves} count={particleCount} />
+          <mesh rotation={[Math.PI / 2, 0, 0]} position={[0, 0, 0]}>
+            <torusGeometry args={[1.2, 0.03, 10, 40]} />
+            <meshStandardMaterial color="#ff6a00" emissive="#ff6a00" emissiveIntensity={1.85} />
+          </mesh>
+          <mesh rotation={[Math.PI / 2.6, 0.4, 0.2]} position={[0.12, 0.16, 0]}>
+            <torusGeometry args={[0.74, 0.022, 8, 32, Math.PI * 1.2]} />
+            <meshStandardMaterial color="#f04400" emissive="#f04400" emissiveIntensity={1.55} />
+          </mesh>
+          <mesh position={[-6.4, 2.2, 5.2]} rotation={[0.6, 0.4, 0.2]}>
+            <torusGeometry args={[1.8, 0.018, 8, 32]} />
+            <meshStandardMaterial color="#ff9400" emissive="#ff9400" emissiveIntensity={1.25} />
+          </mesh>
+          <mesh position={[6.8, -0.6, 2.4]} rotation={[1.2, -0.3, 0.5]}>
+            <torusGeometry args={[1.45, 0.016, 8, 32]} />
+            <meshStandardMaterial color="#f04400" emissive="#f04400" emissiveIntensity={1.2} />
+          </mesh>
+          <mesh position={[-1.2, 3.4, -4.8]} rotation={[0.2, 1.1, 0.4]}>
+            <torusGeometry args={[2.2, 0.014, 8, 36]} />
+            <meshStandardMaterial color="#ff6a00" emissive="#ff6a00" emissiveIntensity={1.1} />
+          </mesh>
+        </group>
         <FieldMotes count={moteCount} />
         {contentScreens.map((screen) => (
           <ContentScreen3D
