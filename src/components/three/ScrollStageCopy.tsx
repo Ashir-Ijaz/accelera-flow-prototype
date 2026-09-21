@@ -109,6 +109,8 @@ export function ScrollStageCopy({ stage, focusIndex = 0 }: ScrollStageCopyProps)
                 <div className="board-chip__face">
                   <span className="board-chip__index">{String(index + 1).padStart(2, '0')}</span>
                   <span className="board-chip__label">{board}</span>
+                  <i className="board-chip__live" aria-hidden="true" />
+                  <b className="board-chip__sheen" aria-hidden="true" />
                 </div>
               </motion.article>
             ))}

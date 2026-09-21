@@ -26,7 +26,6 @@ export function FlowEngineScene({ progressRef, reduced, isMobile, emphasized }: 
   const orangeLight = useRef<PointLight>(null)
   const amberLight = useRef<PointLight>(null)
   const curves = useMemo(() => createFlowCurves(), [])
-  const segments = isMobile ? 16 : 28
   const particleCount = isMobile ? 48 : 90
   const moteCount = isMobile ? 32 : 64
   const orange = useMemo(() => new Color('#ff6a00'), [])
@@ -76,18 +75,6 @@ export function FlowEngineScene({ progressRef, reduced, isMobile, emphasized }: 
       )}
       <FlowCameraController progressRef={progressRef} reduced={reduced} />
       <group ref={groupRef}>
-        {curves.map((curve, index) => (
-          <mesh key={index}>
-            <tubeGeometry args={[curve, segments, index === 1 ? 0.065 : 0.085, 6, false]} />
-            <meshStandardMaterial
-              color={index === 1 ? '#f04400' : '#ff6a00'}
-              emissive={index === 2 ? '#ff9400' : '#ff6a00'}
-              emissiveIntensity={1.55}
-              roughness={0.22}
-              metalness={0.08}
-            />
-          </mesh>
-        ))}
         <FlowParticles curves={curves} count={particleCount} />
         <FieldMotes count={moteCount} />
         <mesh rotation={[Math.PI / 2, 0, 0]}>
