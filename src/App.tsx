@@ -1,7 +1,6 @@
-import { lazy, Suspense, useEffect, useState, type ReactNode } from 'react'
+import { lazy, Suspense, type ReactNode } from 'react'
 import { BrowserRouter, HashRouter, Route, Routes, useLocation } from 'react-router-dom'
 import { SmoothScrollProvider } from './components/animation/SmoothScrollProvider'
-import { LogoPreloader } from './components/animation/LogoPreloader'
 import { AppShell } from './components/layout/AppShell'
 import { RouteErrorBoundary } from './components/layout/RouteErrorBoundary'
 import { routerBasename } from './lib/paths'
@@ -51,24 +50,13 @@ function SiteRouter({ children }: { children: ReactNode }) {
 }
 
 export default function App() {
-  const [ready, setReady] = useState(false)
-
-  useEffect(() => {
-    const id = window.setTimeout(() => setReady(true), 1000)
-    return () => window.clearTimeout(id)
-  }, [])
-
   return (
     <SiteRouter>
-      {ready ? (
-        <SmoothScrollProvider>
-          <AppShell>
-            <AppRoutes />
-          </AppShell>
-        </SmoothScrollProvider>
-      ) : (
-        <LogoPreloader />
-      )}
+      <SmoothScrollProvider>
+        <AppShell>
+          <AppRoutes />
+        </AppShell>
+      </SmoothScrollProvider>
     </SiteRouter>
   )
 }

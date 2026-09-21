@@ -113,6 +113,7 @@
   display: grid;
   gap: 0.45rem;
   justify-items: end;
+  perspective: 720px;
 }
 
 .flow-engine__copy.is-flip .board-rail__stack {
@@ -120,10 +121,22 @@
 }
 
 .board-rail__stack span {
+  display: grid;
+  place-items: center;
+  width: 10.6rem;
+  min-width: 10.6rem;
+  min-height: 2.4rem;
   background: #2c2829;
   border: 1px solid var(--divider);
   padding: 0.4rem 0.7rem;
   font-size: 0.86rem;
+  transform-origin: right center;
+  transform-style: preserve-3d;
+  backface-visibility: hidden;
+}
+
+.flow-engine__copy.is-flip .board-rail__stack span {
+  transform-origin: left center;
 }
 
 .board-rail ul {
@@ -1583,7 +1596,7 @@
 
 .choice-grid {
   display: grid;
-  grid-template-columns: 1.05fr 0.95fr;
+  grid-template-columns: 1fr 1fr;
   gap: 1.1rem;
   align-items: stretch;
 }
@@ -1591,7 +1604,8 @@
 .choice-card {
   position: relative;
   display: grid;
-  min-height: 22rem;
+  min-height: 24.5rem;
+  height: 100%;
   text-decoration: none;
   color: inherit;
   overflow: hidden;
@@ -1608,7 +1622,7 @@
 }
 
 .choice-card--ig {
-  grid-template-columns: 0.82fr 1.18fr;
+  grid-template-columns: 0.9fr 1.1fr;
   align-items: stretch;
   background:
     radial-gradient(circle at 18% 20%, rgba(255, 79, 123, 0.42), transparent 36%),
@@ -1695,7 +1709,8 @@
 
 .choice-card__phones {
   position: relative;
-  min-height: 22rem;
+  min-height: 0;
+  height: 100%;
 }
 
 .choice-card__phones figure {
@@ -2097,7 +2112,6 @@
 
 .promo-cta .btn--promote {
   justify-self: end;
-  min-width: 12.5rem;
 }
 
 .jobs__layout {
@@ -2111,6 +2125,13 @@
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 1rem;
+  align-items: stretch;
+}
+
+.jobs__pair input,
+.jobs__pair select {
+  width: 100%;
+  min-height: 2.85rem;
 }
 
 .jobs__form textarea {
@@ -2186,6 +2207,8 @@
   background: var(--surface);
   border: 1px solid var(--divider);
   padding: 1.2rem 1.25rem;
+  min-height: 12.5rem;
+  height: 100%;
 }
 
 .channel-index h2 {
@@ -2215,7 +2238,8 @@
   background: var(--surface);
   border: 1px solid var(--divider);
   border-top: 2px solid var(--orange);
-  min-height: 6.5rem;
+  min-height: 8.2rem;
+  height: 100%;
   transition:
     transform 220ms var(--ease-out),
     border-color 220ms var(--ease-soft),
@@ -2556,6 +2580,15 @@
     animation: none;
     transform: none;
   }
+
+  .board-rail__stack span {
+    filter: none;
+    transform: none;
+  }
+
+  .btn--promote::before {
+    display: none;
+  }
 }
 
 .workflow {
@@ -2760,6 +2793,7 @@
   .promo-cta .btn--promote {
     justify-self: stretch;
     min-width: 0;
+    max-width: none;
     width: 100%;
   }
 }
@@ -2774,6 +2808,8 @@
 
   .btn {
     width: 100%;
+    max-width: none;
+    min-width: 0;
   }
 
   .stage-copy__actions {

@@ -5,5 +5,9 @@ type BrandLogoProps = {
 }
 
 export function BrandLogo({ className = 'brand-logo' }: BrandLogoProps) {
-  return <img src={LOGO_SRC} alt={LOGO_ALT} className={className} width={320} height={96} />
+  return (
+    <span className="brand-mark">
+      <img src={LOGO_SRC} alt={LOGO_ALT} className={className} width={468} height={250} />
+    </span>
+  )
 }
