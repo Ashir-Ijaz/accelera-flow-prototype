@@ -6,11 +6,12 @@ import { usePrefersReducedMotion } from '../../hooks/usePrefersReducedMotion'
 
 type ScrollStageCopyProps = {
   stage: FlowStage
+  focusIndex?: number
 }
 
 const ease = [0.22, 1, 0.36, 1] as const
 
-export function ScrollStageCopy({ stage }: ScrollStageCopyProps) {
+export function ScrollStageCopy({ stage, focusIndex = 0 }: ScrollStageCopyProps) {
   const reduced = usePrefersReducedMotion()
   const flip = stage.alignment === 'right' || stage.alignment === 'right-centre'
   const enterX = flip ? 32 : -32
@@ -65,7 +66,7 @@ export function ScrollStageCopy({ stage }: ScrollStageCopyProps) {
             {stage.boards.slice(0, 4).map((board, index) => (
               <motion.article
                 key={board}
-                className={`board-chip board-chip--${index + 1}`}
+                className={`board-chip${index === focusIndex ? ' is-on' : ''}`}
                 layout
                 layoutId={`board-${board}`}
                 initial={

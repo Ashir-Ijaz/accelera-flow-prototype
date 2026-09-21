@@ -1,7 +1,7 @@
 import { lazy, Suspense, useEffect, useLayoutEffect, useRef, useState } from 'react'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
-import { flowStages, stageFromProgress } from '../../data/flowStages'
+import { boardFocusFromProgress, flowStages, stageFromProgress } from '../../data/flowStages'
 import { useMediaQuery } from '../../hooks/useMediaQuery'
 import { usePrefersReducedMotion } from '../../hooks/usePrefersReducedMotion'
 import { FlowEngineFallback } from '../three/FlowEngineFallback'
@@ -17,7 +17,9 @@ export function FlowEngineSection() {
   const sectionRef = useRef<HTMLElement>(null)
   const progressRef = useRef<MutableProgress>({ value: 0 })
   const stageKeyRef = useRef(flowStages[0].key)
+  const focusRef = useRef(0)
   const [stage, setStage] = useState(flowStages[0])
+  const [focusIndex, setFocusIndex] = useState(0)
   const [active, setActive] = useState(true)
   const pinRef = useRef<HTMLDivElement>(null)
 
@@ -56,9 +58,14 @@ export function FlowEngineSection() {
         onUpdate: (self) => {
           progressRef.current.value = self.progress
           const next = stageFromProgress(self.progress)
+          const nextFocus = boardFocusFromProgress(next, self.progress)
           if (next.key !== stageKeyRef.current) {
             stageKeyRef.current = next.key
             setStage(next)
+          }
+          if (nextFocus !== focusRef.current) {
+            focusRef.current = nextFocus
+            setFocusIndex(nextFocus)
           }
         },
       })
@@ -94,7 +101,7 @@ export function FlowEngineSection() {
             />
           </Suspense>
         </WebGLErrorBoundary>
-        <ScrollStageCopy stage={stage} />
+        <ScrollStageCopy stage={stage} focusIndex={focusIndex} />
       </div>
     </section>
   )
