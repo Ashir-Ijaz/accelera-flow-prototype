@@ -9,7 +9,7 @@ type FlowEngineCanvasProps = {
   reduced: boolean
   isMobile: boolean
   active: boolean
-  emphasized: string[]
+  activeBoard: string | null
 }
 
 export function FlowEngineCanvas({
@@ -17,7 +17,7 @@ export function FlowEngineCanvas({
   reduced,
   isMobile,
   active,
-  emphasized,
+  activeBoard,
 }: FlowEngineCanvasProps) {
   return (
     <div className="flow-engine__canvas" aria-hidden="true">
@@ -40,7 +40,7 @@ export function FlowEngineCanvas({
           progressRef={progressRef}
           reduced={reduced}
           isMobile={isMobile}
-          emphasized={emphasized}
+          activeBoard={activeBoard}
         />
       </Canvas>
     </div>

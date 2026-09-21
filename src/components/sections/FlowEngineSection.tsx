@@ -97,7 +97,7 @@ export function FlowEngineSection() {
               reduced={reduced}
               isMobile={isMobile}
               active={active}
-              emphasized={stage.boards}
+              activeBoard={focusIndex >= 0 ? (stage.boards[focusIndex] ?? null) : null}
             />
           </Suspense>
         </WebGLErrorBoundary>

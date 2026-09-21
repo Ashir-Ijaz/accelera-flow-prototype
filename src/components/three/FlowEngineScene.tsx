@@ -3,13 +3,11 @@ import type { MutableRefObject } from 'react'
 import { useFrame } from '@react-three/fiber'
 import { Color, Group, PointLight } from 'three'
 import { FlowCameraController } from './FlowCameraController'
-import { FlowParticles } from './FlowParticles'
 import { FieldMotes } from './FieldMotes'
 import { ContentScreen3D } from './ContentScreen3D'
 import {
   channelScreens,
   contentScreens,
-  createFlowCurves,
   teamPositions,
   type MutableProgress,
 } from './flowPaths'
@@ -18,15 +16,22 @@ type FlowEngineSceneProps = {
   progressRef: MutableRefObject<MutableProgress>
   reduced: boolean
   isMobile: boolean
-  emphasized: string[]
+  activeBoard: string | null
 }
 
-export function FlowEngineScene({ progressRef, reduced, isMobile, emphasized }: FlowEngineSceneProps) {
+function matchesBoard(label: string, board: string | null) {
+  if (!board) return false
+  if (label === board) return true
+  if (board === 'Video' && label === 'Short-form video') return true
+  if (board === 'Publish' && label === 'Publishing') return true
+  if (board === 'Engage' && label === 'Community') return true
+  return false
+}
+
+export function FlowEngineScene({ progressRef, reduced, isMobile, activeBoard }: FlowEngineSceneProps) {
   const groupRef = useRef<Group>(null)
   const orangeLight = useRef<PointLight>(null)
   const amberLight = useRef<PointLight>(null)
-  const curves = useMemo(() => createFlowCurves(), [])
-  const particleCount = isMobile ? 48 : 90
   const moteCount = isMobile ? 32 : 64
   const orange = useMemo(() => new Color('#ff6a00'), [])
   const red = useMemo(() => new Color('#f04400'), [])
@@ -75,35 +80,14 @@ export function FlowEngineScene({ progressRef, reduced, isMobile, emphasized }: 
       )}
       <FlowCameraController progressRef={progressRef} reduced={reduced} />
       <group ref={groupRef}>
-        <FlowParticles curves={curves} count={particleCount} />
         <FieldMotes count={moteCount} />
-        <mesh rotation={[Math.PI / 2, 0, 0]}>
-            <torusGeometry args={[1.2, 0.03, 10, 40]} />
-            <meshStandardMaterial color="#ff6a00" emissive="#ff6a00" emissiveIntensity={1.85} />
-          </mesh>
-          <mesh rotation={[Math.PI / 2.6, 0.4, 0.2]} position={[0.12, 0.16, 0]}>
-            <torusGeometry args={[0.74, 0.022, 8, 32, Math.PI * 1.2]} />
-            <meshStandardMaterial color="#f04400" emissive="#f04400" emissiveIntensity={1.55} />
-          </mesh>
-        <mesh position={[-6.4, 2.2, 5.2]} rotation={[0.6, 0.4, 0.2]}>
-            <torusGeometry args={[1.8, 0.018, 8, 32]} />
-            <meshStandardMaterial color="#ff9400" emissive="#ff9400" emissiveIntensity={1.25} />
-          </mesh>
-        <mesh position={[6.8, -0.6, 2.4]} rotation={[1.2, -0.3, 0.5]}>
-            <torusGeometry args={[1.45, 0.016, 8, 32]} />
-            <meshStandardMaterial color="#f04400" emissive="#f04400" emissiveIntensity={1.2} />
-          </mesh>
-        <mesh position={[-1.2, 3.4, -4.8]} rotation={[0.2, 1.1, 0.4]}>
-            <torusGeometry args={[2.2, 0.014, 8, 36]} />
-            <meshStandardMaterial color="#ff6a00" emissive="#ff6a00" emissiveIntensity={1.1} />
-          </mesh>
         {contentScreens.map((screen) => (
           <ContentScreen3D
             key={screen.label}
             label={screen.label}
             position={screen.position}
             size={screen.size}
-            emphasized={emphasized.includes(screen.label)}
+            emphasized={matchesBoard(screen.label, activeBoard)}
             progressRef={progressRef}
           />
         ))}
@@ -114,7 +98,7 @@ export function FlowEngineScene({ progressRef, reduced, isMobile, emphasized }: 
             kicker={screen.platform}
             position={screen.position}
             size={[2.05, 1.24]}
-            emphasized={emphasized.includes(screen.label)}
+            emphasized={matchesBoard(screen.label, activeBoard)}
             progressRef={progressRef}
           />
         ))}
