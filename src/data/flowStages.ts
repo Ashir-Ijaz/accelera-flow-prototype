@@ -88,9 +88,11 @@ export function stageFromProgress(progress: number) {
 
 export function boardFocusFromProgress(stage: FlowStage, progress: number) {
   const boards = stage.boards.slice(0, 4)
-  if (boards.length <= 1) return 0
+  if (boards.length === 0) return -1
+  if (boards.length === 1) return 0
   const span = Math.max(0.0001, stage.to - stage.from)
   const local = Math.min(0.999, Math.max(0, (progress - stage.from) / span))
+  if (stage.key === 'arrival' && progress < 0.02) return -1
   return Math.min(boards.length - 1, Math.floor(local * boards.length))
 }
 

@@ -17,9 +17,9 @@ export function FlowEngineSection() {
   const sectionRef = useRef<HTMLElement>(null)
   const progressRef = useRef<MutableProgress>({ value: 0 })
   const stageKeyRef = useRef(flowStages[0].key)
-  const focusRef = useRef(0)
+  const focusRef = useRef(-1)
   const [stage, setStage] = useState(flowStages[0])
-  const [focusIndex, setFocusIndex] = useState(0)
+  const [focusIndex, setFocusIndex] = useState(-1)
   const [active, setActive] = useState(true)
   const pinRef = useRef<HTMLDivElement>(null)
 
