@@ -79,7 +79,6 @@ export function ScrollStageCopy({ stage, focusIndex = 0 }: ScrollStageCopyProps)
                         rotateY: flip ? 58 : -58,
                         rotateX: 8,
                         scale: 0.84,
-                        filter: 'blur(10px)',
                       }
                 }
                 animate={{
@@ -88,8 +87,7 @@ export function ScrollStageCopy({ stage, focusIndex = 0 }: ScrollStageCopyProps)
                   y: 0,
                   rotateY: 0,
                   rotateX: 0,
-                  scale: 1,
-                  filter: 'blur(0px)',
+                  scale: index === focusIndex ? 1.06 : 1,
                 }}
                 exit={
                   reduced
@@ -100,7 +98,6 @@ export function ScrollStageCopy({ stage, focusIndex = 0 }: ScrollStageCopyProps)
                         y: -14,
                         rotateY: flip ? -42 : 42,
                         scale: 0.9,
-                        filter: 'blur(8px)',
                       }
                 }
                 transition={{
@@ -109,8 +106,10 @@ export function ScrollStageCopy({ stage, focusIndex = 0 }: ScrollStageCopyProps)
                   ease,
                 }}
               >
-                <span className="board-chip__index">{String(index + 1).padStart(2, '0')}</span>
-                <span className="board-chip__label">{board}</span>
+                <div className="board-chip__face">
+                  <span className="board-chip__index">{String(index + 1).padStart(2, '0')}</span>
+                  <span className="board-chip__label">{board}</span>
+                </div>
               </motion.article>
             ))}
           </AnimatePresence>
