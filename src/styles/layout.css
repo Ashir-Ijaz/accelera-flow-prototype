@@ -84,6 +84,7 @@ img.brand-logo {
   object-fit: contain;
   object-position: left center;
   background: transparent;
+  mix-blend-mode: normal;
 }
 
 img.brand-logo--footer {

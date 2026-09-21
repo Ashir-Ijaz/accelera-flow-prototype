@@ -63,8 +63,9 @@ export function ScrollStageCopy({ stage }: ScrollStageCopyProps) {
         <div className="board-rail__stack">
           <AnimatePresence mode="popLayout">
             {stage.boards.slice(0, 4).map((board, index) => (
-              <motion.span
+              <motion.article
                 key={board}
+                className={`board-chip board-chip--${index + 1}`}
                 layout
                 layoutId={`board-${board}`}
                 initial={
@@ -73,10 +74,11 @@ export function ScrollStageCopy({ stage }: ScrollStageCopyProps) {
                     : {
                         opacity: 0,
                         x: chipX,
-                        y: 18,
-                        rotateY: flip ? 70 : -70,
-                        scale: 0.78,
-                        filter: 'blur(12px)',
+                        y: 22,
+                        rotateY: flip ? 58 : -58,
+                        rotateX: 8,
+                        scale: 0.84,
+                        filter: 'blur(10px)',
                       }
                 }
                 animate={{
@@ -84,6 +86,7 @@ export function ScrollStageCopy({ stage }: ScrollStageCopyProps) {
                   x: 0,
                   y: 0,
                   rotateY: 0,
+                  rotateX: 0,
                   scale: 1,
                   filter: 'blur(0px)',
                 }}
@@ -92,21 +95,22 @@ export function ScrollStageCopy({ stage }: ScrollStageCopyProps) {
                     ? { opacity: 0 }
                     : {
                         opacity: 0,
-                        x: -chipX * 0.7,
-                        y: -16,
-                        rotateY: flip ? -50 : 50,
-                        scale: 0.86,
-                        filter: 'blur(10px)',
+                        x: -chipX * 0.65,
+                        y: -14,
+                        rotateY: flip ? -42 : 42,
+                        scale: 0.9,
+                        filter: 'blur(8px)',
                       }
                 }
                 transition={{
-                  duration: reduced ? 0.18 : 0.5,
-                  delay: reduced ? 0 : index * 0.08,
+                  duration: reduced ? 0.18 : 0.52,
+                  delay: reduced ? 0 : index * 0.09,
                   ease,
                 }}
               >
-                {board}
-              </motion.span>
+                <span className="board-chip__index">{String(index + 1).padStart(2, '0')}</span>
+                <span className="board-chip__label">{board}</span>
+              </motion.article>
             ))}
           </AnimatePresence>
         </div>
