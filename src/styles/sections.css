@@ -111,9 +111,10 @@
 
 .board-rail__stack {
   display: grid;
-  gap: 0.45rem;
+  gap: 0.5rem;
   justify-items: end;
-  perspective: 720px;
+  perspective: 900px;
+  min-width: 11.2rem;
 }
 
 .flow-engine__copy.is-flip .board-rail__stack {
@@ -1596,7 +1597,7 @@
 
 .choice-grid {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 1.1rem;
   align-items: stretch;
 }
@@ -1604,7 +1605,7 @@
 .choice-card {
   position: relative;
   display: grid;
-  min-height: 24.5rem;
+  min-height: 26rem;
   height: 100%;
   text-decoration: none;
   color: inherit;
