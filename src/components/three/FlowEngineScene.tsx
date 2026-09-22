@@ -43,6 +43,8 @@ export function FlowEngineScene({ progressRef, reduced, isMobile }: FlowEngineSc
     <>
       <color attach="background" args={['#160e0c']} />
       <fog attach="fog" args={['#160e0c', 34, 78]} />
+      <ambientLight intensity={0.78} />
+      <pointLight position={[-2.4, 2.2, 1]} color="#ff6a00" intensity={42} distance={32} />
       <FlowCameraController progressRef={progressRef} reduced={reduced} />
       <group ref={groupRef}>
         <group>
@@ -82,7 +84,7 @@ export function FlowEngineScene({ progressRef, reduced, isMobile }: FlowEngineSc
             progressRef={progressRef}
           />
         ))}
-        {channelScreens.slice(0, isMobile ? 4 : 7).map((screen, index) => (
+        {channelScreens.map((screen, index) => (
           <ContentScreen3D
             key={`${screen.platform}-${screen.label}-${index}`}
             label={screen.label}

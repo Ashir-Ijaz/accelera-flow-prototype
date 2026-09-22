@@ -40,7 +40,7 @@ export function ChannelCard({ channel, active = false, compact = false, style }:
       onPointerMove={onMove}
       onPointerLeave={onLeave}
     >
-      <div>
+      <div className={compact ? undefined : 'channel-card__body'}>
         <div
           className={`channel-thumb is-${channel.platform === 'youtube' ? 'yt' : channel.platform === 'tiktok' ? 'tt' : channel.platform === 'facebook' ? 'fb' : 'ig'}`}
         >
@@ -53,10 +53,12 @@ export function ChannelCard({ channel, active = false, compact = false, style }:
             <DummyImage src={banner.card} width={banner.width} height={banner.height} alt="" />
           )}
         </div>
-        <small>{platformLabels[channel.platform]}</small>
-        <h3>{channel.name}</h3>
+        <div className={compact ? undefined : 'channel-card__copy'}>
+          <small>{platformLabels[channel.platform]}</small>
+          <h3>{channel.name}</h3>
+        </div>
       </div>
-      {compact ? null : <span className="btn btn--ghost">View channel</span>}
+      {compact ? null : <span className="btn btn--promote">View channel</span>}
     </a>
   )
 }

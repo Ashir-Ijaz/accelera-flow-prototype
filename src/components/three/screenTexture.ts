@@ -2,8 +2,8 @@ import { useEffect, useMemo, useRef } from 'react'
 import { SRGBColorSpace, CanvasTexture, LinearFilter } from 'three'
 
 const palette = ['#FF6A00', '#F04400', '#FF9400']
-const WIDTH = 256
-const HEIGHT = 160
+const WIDTH = 512
+const HEIGHT = 320
 
 export function createScreenTexture(label: string, kicker = 'Flow') {
   const canvas = document.createElement('canvas')
@@ -26,19 +26,19 @@ export function createScreenTexture(label: string, kicker = 'Flow') {
   ctx.fillRect(16, 16, WIDTH - 32, 14)
 
   ctx.fillStyle = '#FFB14A'
-  ctx.font = '700 14px Manrope, sans-serif'
-  ctx.fillText(kicker.toUpperCase(), 22, 40)
+  ctx.font = '700 22px Manrope, sans-serif'
+  ctx.fillText(kicker.toUpperCase(), 36, 68)
 
   ctx.fillStyle = '#FFF6EE'
-  ctx.font = '700 28px "Space Grotesk", sans-serif'
-  wrapText(ctx, label, 22, 72, WIDTH - 44, 30)
+  ctx.font = '700 48px "Space Grotesk", sans-serif'
+  wrapText(ctx, label, 36, 128, WIDTH - 80, 54)
 
   ctx.fillStyle = 'rgba(255,148,0,0.55)'
   ctx.fillRect(36, HEIGHT - 48, 160, 6)
 
   const texture = new CanvasTexture(canvas)
   texture.colorSpace = SRGBColorSpace
-  texture.anisotropy = 1
+  texture.anisotropy = 4
   texture.generateMipmaps = false
   texture.minFilter = LinearFilter
   texture.magFilter = LinearFilter

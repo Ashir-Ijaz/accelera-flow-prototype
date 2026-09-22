@@ -26,6 +26,7 @@ export function ContentScreen3D({
 }: ContentScreen3DProps) {
   const groupRef = useRef<Group>(null)
   const glowRef = useRef<Mesh>(null)
+  const screenRef = useRef<Mesh>(null)
   const camLocal = useMemo(() => new Vector3(), [])
   const side = useMemo(() => new Vector3(), [])
   const motion = useRef({ x: position[0], y: position[1], z: position[2], scale: 1, glow: 0.12, turn: false })
@@ -96,12 +97,18 @@ export function ContentScreen3D({
 
     const glow = glowRef.current
     if (glow) {
-      glow.visible = sm.glow > 0.2
-      glow.scale.setScalar(1.06 + Math.sin(time * 3.2) * 0.04)
+      glow.visible = isTurn
+      glow.scale.setScalar(1.08 + Math.sin(time * 3.2) * 0.04)
       const material = glow.material
       if (material && 'opacity' in material) {
-        material.opacity = isTurn ? 0.28 + Math.sin(time * 3.2) * 0.08 : 0
+        material.opacity = isTurn ? 0.28 + Math.sin(time * 3.2) * 0.1 : 0
       }
+    }
+
+    const screen = screenRef.current
+    const screenMaterial = screen?.material
+    if (screenMaterial && 'emissiveIntensity' in screenMaterial) {
+      screenMaterial.emissiveIntensity = isTurn ? 1.45 : 0.32
     }
   })
 
@@ -111,9 +118,14 @@ export function ContentScreen3D({
         <planeGeometry args={[size[0] + 0.28, size[1] + 0.28]} />
         <meshBasicMaterial color="#ff6a00" transparent opacity={0} side={DoubleSide} depthWrite={false} />
       </mesh>
-      <mesh>
+      <mesh ref={screenRef}>
         <planeGeometry args={[size[0], size[1]]} />
-        <meshBasicMaterial map={texture} side={DoubleSide} />
+        <meshStandardMaterial
+          map={texture}
+          emissive="#ff6a00"
+          emissiveIntensity={0.32}
+          side={DoubleSide}
+        />
       </mesh>
     </group>
   )

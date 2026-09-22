@@ -1693,7 +1693,46 @@
 
 .channel-grid .channel-card {
   position: relative;
-  min-height: 16rem;
+  min-height: 0;
+  justify-content: flex-start;
+  padding: 1.4rem;
+  gap: 1.1rem;
+}
+
+.channel-card__body {
+  display: flex;
+  flex-direction: column;
+  gap: 1.1rem;
+}
+
+.channel-grid .channel-thumb {
+  margin-bottom: 0;
+}
+
+.channel-card__copy {
+  display: flex;
+  flex-direction: column;
+  gap: 0.42rem;
+  text-align: left;
+}
+
+.channel-card__copy small {
+  display: block;
+}
+
+.channel-card__copy h3 {
+  margin: 0;
+  font-size: clamp(1.18rem, 1.7vw, 1.42rem);
+  line-height: 1.12;
+}
+
+.channel-grid .channel-card .btn {
+  align-self: flex-start;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: auto;
+  max-width: 100%;
 }
 
 .featured-channel {
@@ -3111,6 +3150,20 @@
     width: 100%;
     max-width: none;
     min-width: 0;
+  }
+
+  .channel-grid .channel-card {
+    padding: 1.2rem;
+    gap: 1rem;
+  }
+
+  .channel-card__body {
+    gap: 1rem;
+  }
+
+  .channel-grid .channel-card .btn {
+    align-self: stretch;
+    width: 100%;
   }
 
   .stage-copy__actions {
