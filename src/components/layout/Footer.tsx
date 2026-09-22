@@ -2,6 +2,7 @@ import { useState } from 'react'
 import type { FormEvent } from 'react'
 import { Link } from 'react-router-dom'
 import { ArrowUp } from 'lucide-react'
+import { channelsForPlatform, platformLabels, platformOrder } from '../../data/channels'
 import { companyFacts } from '../../data/company'
 import { navItems } from '../../data/navigation'
 import { useLenisInstance } from '../../hooks/useLenisInstance'
@@ -26,7 +27,7 @@ export function Footer() {
   return (
     <footer className="footer">
       <div className="footer__grid">
-        <div>
+        <div className="footer__brand">
           <Link to="/" aria-label="Accelera Flow LTD home">
             <BrandLogo className="brand-logo brand-logo--footer" />
           </Link>
@@ -40,16 +41,16 @@ export function Footer() {
                 {item.label}
               </Link>
             ))}
-            <Link to="/promote">Promotion</Link>
           </div>
         </div>
         <div>
-          <h2>Platforms</h2>
+          <h2>Promotion</h2>
           <div className="footer__platforms">
+            <Link to="/promote">All platforms</Link>
             <Link to="/promote/instagram">Instagram</Link>
             <Link to="/promote/youtube">YouTube</Link>
           </div>
-          <h2 style={{ marginTop: '1.4rem' }}>Newsletter prototype</h2>
+          <h2>Newsletter prototype</h2>
           {newsletter === 'idle' ? (
             <form className="newsletter" onSubmit={onNewsletter}>
               <label className="sr-only" htmlFor="newsletter-email">
@@ -64,6 +65,21 @@ export function Footer() {
             </p>
           )}
           <p className="note">Business email to be added</p>
+        </div>
+      </div>
+      <div className="footer__owned">
+        <h2>Owned pages</h2>
+        <div className="footer__pages">
+          {platformOrder.map((platform) => (
+            <div key={platform} className="footer__page-group">
+              <strong>{platformLabels[platform]}</strong>
+              {channelsForPlatform(platform).map((channel) => (
+                <a key={channel.id} href={channel.url} target="_blank" rel="noopener noreferrer">
+                  {channel.name}
+                </a>
+              ))}
+            </div>
+          ))}
         </div>
       </div>
       <div className="footer__base">

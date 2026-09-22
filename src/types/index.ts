@@ -3,7 +3,7 @@ export type NavItem = {
   path: string
 }
 
-export type ChannelPlatform = 'instagram' | 'youtube'
+export type ChannelPlatform = 'instagram' | 'youtube' | 'tiktok' | 'facebook'
 
 export type Channel = {
   id: string

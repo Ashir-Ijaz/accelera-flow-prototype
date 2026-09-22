@@ -1,5 +1,5 @@
 import { useMemo, useState } from 'react'
-import { channels } from '../data/channels'
+import { channels, channelsForPlatform, platformLabels, platformOrder } from '../data/channels'
 import { pageMeta } from '../data/meta'
 import { useDocumentMeta } from '../hooks/useDocumentMeta'
 import { ChannelCard } from '../components/ui/ChannelCard'
@@ -12,30 +12,41 @@ export default function BrandsPage() {
   useDocumentMeta(pageMeta.brands)
   const [filter, setFilter] = useState<'all' | ChannelPlatform>('all')
 
-  const visible = useMemo(
-    () => (filter === 'all' ? channels : channels.filter((channel) => channel.platform === filter)),
+  const groups = useMemo(
+    () => platformOrder.filter((platform) => filter === 'all' || filter === platform),
     [filter],
   )
 
   return (
-    <PageHero kicker="Owned channels" title="Seven brands. One faceless system." asideLabel="Channels" tone="ember">
+    <PageHero kicker="Owned channels" title="Owned pages. One faceless system." asideLabel="Channels" tone="ember">
       <div className="search-row">
-        {(['all', 'instagram', 'youtube'] as const).map((value) => (
+        {(['all', ...platformOrder] as const).map((value) => (
           <button
             key={value}
             type="button"
             className={`filter-btn${filter === value ? ' is-active' : ''}`}
             onClick={() => setFilter(value)}
           >
-            {value}
+            {value === 'all' ? 'all' : platformLabels[value]}
           </button>
         ))}
       </div>
-      <Reveal className="channel-grid">
-        {visible.map((channel) => (
-          <ChannelCard key={channel.id} channel={channel} />
-        ))}
-      </Reveal>
+      {groups.map((platform) => {
+        const items = filter === 'all' ? channelsForPlatform(platform) : channels.filter((channel) => channel.platform === platform)
+        return (
+          <Reveal key={platform} className="channel-platform">
+            <p className="channel-platform__kicker">
+              {platformLabels[platform]}
+              <span>{items.length}</span>
+            </p>
+            <div className="channel-grid">
+              {items.map((channel) => (
+                <ChannelCard key={channel.id} channel={channel} />
+              ))}
+            </div>
+          </Reveal>
+        )
+      })}
       <div className="split page-close">
         <p>Start a project around an owned channel, or a new brief.</p>
         <MagneticButton to="/contact">Start a project</MagneticButton>

@@ -38,7 +38,7 @@ export function SmoothScrollProvider({ children }: SmoothScrollProviderProps) {
 
     const instance = new Lenis({
       autoRaf: false,
-      duration: 0.55,
+      duration: 0.78,
       smoothWheel: true,
     })
 
@@ -50,7 +50,7 @@ export function SmoothScrollProvider({ children }: SmoothScrollProviderProps) {
     }
 
     gsap.ticker.add(tick)
-    gsap.ticker.lagSmoothing(300, 33)
+    gsap.ticker.lagSmoothing(1000, 16)
 
     const refresh = () => ScrollTrigger.refresh()
     window.addEventListener('load', refresh)

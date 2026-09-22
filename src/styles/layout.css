@@ -395,15 +395,19 @@ img.brand-logo--preloader {
 .footer__grid {
   position: relative;
   display: grid;
-  grid-template-columns: 1.3fr 0.8fr 1fr;
+  grid-template-columns: minmax(0, 1.35fr) minmax(0, 0.85fr) minmax(0, 1.15fr);
   gap: clamp(1.5rem, 4vw, 3.5rem);
   max-width: 1280px;
   margin: 0 auto;
 }
 
+.footer__brand {
+  min-width: 0;
+}
+
 .footer__desc {
   color: var(--muted);
-  max-width: none;
+  max-width: 34rem;
   margin-top: 1rem;
 }
 
@@ -416,11 +420,48 @@ img.brand-logo--preloader {
   font-weight: 600;
 }
 
+.footer__grid h2 + h2,
+.footer__platforms + h2 {
+  margin-top: 1.5rem;
+}
+
 .footer__links,
 .footer__platforms {
   display: flex;
   flex-direction: column;
   gap: 0.55rem;
+}
+
+.footer__owned {
+  position: relative;
+  max-width: 1280px;
+  margin: 2.4rem auto 0;
+  padding-top: 1.8rem;
+  border-top: 1px solid var(--divider);
+}
+
+.footer__owned > h2 {
+  margin-bottom: 1.15rem;
+}
+
+.footer__pages {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 1.4rem 1.8rem;
+}
+
+.footer__page-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.42rem;
+  min-width: 0;
+}
+
+.footer__page-group strong {
+  font-size: 0.68rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--orange);
 }
 
 .footer a {
@@ -854,11 +895,19 @@ img.brand-logo--preloader {
   .footer__grid {
     grid-template-columns: 1fr 1fr;
   }
+
+  .footer__pages {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
 }
 
 @media (max-width: 720px) {
   .footer__grid {
     grid-template-columns: 1fr;
+  }
+
+  .footer__pages {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
   .newsletter {

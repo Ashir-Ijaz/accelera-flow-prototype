@@ -39,7 +39,7 @@ export function FlowParticles({ curves, count }: FlowParticlesProps) {
     sampled.forEach((points) => {
       const last = points.length - 1
       for (let n = 0; n < perCurve; n += 1) {
-        const u = (n / perCurve + time * 0.28) % 1
+        const u = (n / perCurve + time * 0.38) % 1
         const scaled = u * last
         const i0 = Math.floor(scaled)
         const i1 = Math.min(last, i0 + 1)

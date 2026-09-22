@@ -1,7 +1,7 @@
 import { lazy, Suspense, useEffect, useLayoutEffect, useRef, useState } from 'react'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
-import { boardFocusFromProgress, flowStages, stageFromProgress } from '../../data/flowStages'
+import { boardFocusFromScreen, flowStages, screenFocusFromProgress, stageFromProgress } from '../../data/flowStages'
 import { useMediaQuery } from '../../hooks/useMediaQuery'
 import { usePrefersReducedMotion } from '../../hooks/usePrefersReducedMotion'
 import { FlowEngineFallback } from '../three/FlowEngineFallback'
@@ -17,9 +17,11 @@ export function FlowEngineSection() {
   const sectionRef = useRef<HTMLElement>(null)
   const progressRef = useRef<MutableProgress>({ value: 0 })
   const stageKeyRef = useRef(flowStages[0].key)
-  const focusRef = useRef(-1)
+  const focusRef = useRef(0)
+  const screenRef = useRef(flowStages[0].boards[0])
   const [stage, setStage] = useState(flowStages[0])
-  const [focusIndex, setFocusIndex] = useState(-1)
+  const [focusIndex, setFocusIndex] = useState(0)
+  const [activeScreen, setActiveScreen] = useState(String(screenFocusFromProgress(0)))
   const [active, setActive] = useState(true)
   const pinRef = useRef<HTMLDivElement>(null)
 
@@ -53,12 +55,13 @@ export function FlowEngineSection() {
         trigger: section,
         start: 'top top',
         end: 'bottom bottom',
-        scrub: true,
+        scrub: 0.22,
         invalidateOnRefresh: true,
         onUpdate: (self) => {
           progressRef.current.value = self.progress
           const next = stageFromProgress(self.progress)
-          const nextFocus = boardFocusFromProgress(next, self.progress)
+          const nextScreen = screenFocusFromProgress(self.progress)
+          const nextFocus = boardFocusFromScreen(next, nextScreen)
           if (next.key !== stageKeyRef.current) {
             stageKeyRef.current = next.key
             setStage(next)
@@ -66,6 +69,10 @@ export function FlowEngineSection() {
           if (nextFocus !== focusRef.current) {
             focusRef.current = nextFocus
             setFocusIndex(nextFocus)
+          }
+          if (nextScreen !== screenRef.current) {
+            screenRef.current = nextScreen
+            setActiveScreen(nextScreen)
           }
         },
       })
@@ -97,11 +104,10 @@ export function FlowEngineSection() {
               reduced={reduced}
               isMobile={isMobile}
               active={active}
-              activeBoard={focusIndex >= 0 ? (stage.boards[focusIndex] ?? null) : null}
             />
           </Suspense>
         </WebGLErrorBoundary>
-        <ScrollStageCopy stage={stage} focusIndex={focusIndex} />
+        <ScrollStageCopy stage={stage} focusIndex={focusIndex} activeScreen={activeScreen} />
       </div>
     </section>
   )

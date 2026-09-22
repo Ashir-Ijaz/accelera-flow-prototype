@@ -86,24 +86,95 @@ export function stageFromProgress(progress: number) {
   return match ?? flowStages[flowStages.length - 1]
 }
 
-export function boardFocusFromProgress(stage: FlowStage, progress: number) {
-  const boards = stage.boards.slice(0, 4)
-  if (boards.length === 0) return -1
-  if (boards.length === 1) return 0
-  const span = Math.max(0.0001, stage.to - stage.from)
-  const local = Math.min(0.999, Math.max(0, (progress - stage.from) / span))
-  if (stage.key === 'arrival' && progress < 0.02) return -1
-  return Math.min(boards.length - 1, Math.floor(local * boards.length))
-}
-
 export const contentScreenLabels = [
   'Idea',
   'Script',
   'Design',
   'Short-form video',
   'Publishing',
+  'Wealth Whizz',
+  'Neuromatrix',
+  'GuideTechPro',
   'Community',
   'DM conversation',
   'Growth',
   'Opportunity',
+  'Skills',
+  'Study',
+  'Team',
 ] as const
+
+const journeyHolds = [
+  { from: 0, to: 0.29 },
+  { from: 0.29, to: 0.343 },
+  { from: 0.343, to: 0.396 },
+  { from: 0.396, to: 0.45 },
+  { from: 0.45, to: 0.49 },
+  { from: 0.49, to: 0.53 },
+  { from: 0.53, to: 0.57 },
+  { from: 0.57, to: 0.61 },
+  { from: 0.61, to: 0.67 },
+  { from: 0.67, to: 0.73 },
+  { from: 0.73, to: 0.79 },
+  { from: 0.79, to: 0.823 },
+  { from: 0.823, to: 0.856 },
+  { from: 0.856, to: 0.889 },
+  { from: 0.889, to: 1 },
+] as const
+
+export function screenAliases(screen: string) {
+  if (screen === 'Short-form video' || screen === 'Video') return ['Video', 'Short-form video']
+  if (screen === 'Publishing' || screen === 'Publish') return ['Publish', 'Publishing']
+  if (screen === 'Community' || screen === 'Engage') return ['Engage', 'Community']
+  return [screen]
+}
+
+export function chipMatchesScreen(board: string, screen: string) {
+  return screenAliases(board).includes(screen) || screenAliases(screen).includes(board)
+}
+
+export function carouselVisual(progress: number) {
+  const p = Math.min(0.9999, Math.max(0, progress))
+  const last = contentScreenLabels.length - 1
+  let index = last
+  for (let i = 0; i < journeyHolds.length; i += 1) {
+    if (p < journeyHolds[i].to) {
+      index = i
+      break
+    }
+  }
+
+  const hold = journeyHolds[index]
+  const local = (p - hold.from) / Math.max(0.0001, hold.to - hold.from)
+  const slideStart = 0.7
+  let focus = index
+  if (local > slideStart && index < last) {
+    focus = index + (local - slideStart) / (1 - slideStart)
+  }
+
+  return {
+    focus,
+    turn: index,
+    index,
+    next: Math.min(last, index + 1),
+    mix: Math.max(0, focus - Math.floor(focus)),
+    screen: contentScreenLabels[index],
+  }
+}
+
+export function boardFocusFromProgress(stage: FlowStage, progress: number) {
+  return boardFocusFromScreen(stage, screenFocusFromProgress(progress))
+}
+
+export function screenBlendFromProgress(progress: number) {
+  const visual = carouselVisual(progress)
+  return { index: visual.index, next: visual.next, mix: visual.mix, focus: visual.turn }
+}
+
+export function screenFocusFromProgress(progress: number) {
+  return carouselVisual(progress).screen
+}
+
+export function boardFocusFromScreen(stage: FlowStage, screen: string) {
+  return stage.boards.slice(0, 4).findIndex((board) => chipMatchesScreen(board, screen))
+}

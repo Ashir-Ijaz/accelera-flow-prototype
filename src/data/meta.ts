@@ -9,7 +9,7 @@ export const pageMeta = {
   brands: {
     title: 'Owned brands — Accelera Flow LTD',
     description:
-      'Explore Accelera Flow’s owned Instagram brands and YouTube channels: Wealth Whizz, Neuromatrix, Anonhabit, Reboot with Ash, GuideTechPro, Cyzmify and iQuickFixer.',
+      'Explore Accelera Flow’s owned pages on Instagram, YouTube, TikTok and Facebook, including Wealth Whizz, WiFi Money, Xen Thoughts, Neuromatrix, GuideTechPro, Cyzmify and iQuickFixer.',
   },
   services: {
     title: 'Services — Accelera Flow LTD',
@@ -24,7 +24,7 @@ export const pageMeta = {
   about: {
     title: 'About — Accelera Flow LTD',
     description:
-      'Accelera Flow was founded in Pakistan in 2019, registered in the United Kingdom in 2025, and is built by a twelve-person student team working from desks across the map.',
+      'Accelera Flow was founded in Pakistan in 2019, registered in the United Kingdom in 2025, and is built by a nine-person student team.',
   },
   contact: {
     title: 'Start a project — Accelera Flow LTD',

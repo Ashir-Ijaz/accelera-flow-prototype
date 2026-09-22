@@ -2,8 +2,8 @@ import { useEffect, useMemo, useRef } from 'react'
 import { SRGBColorSpace, CanvasTexture, LinearFilter } from 'three'
 
 const palette = ['#FF6A00', '#F04400', '#FF9400']
-const WIDTH = 512
-const HEIGHT = 320
+const WIDTH = 256
+const HEIGHT = 160
 
 export function createScreenTexture(label: string, kicker = 'Flow') {
   const canvas = document.createElement('canvas')
@@ -26,19 +26,19 @@ export function createScreenTexture(label: string, kicker = 'Flow') {
   ctx.fillRect(16, 16, WIDTH - 32, 14)
 
   ctx.fillStyle = '#FFB14A'
-  ctx.font = '700 22px Manrope, sans-serif'
-  ctx.fillText(kicker.toUpperCase(), 36, 68)
+  ctx.font = '700 14px Manrope, sans-serif'
+  ctx.fillText(kicker.toUpperCase(), 22, 40)
 
   ctx.fillStyle = '#FFF6EE'
-  ctx.font = '700 48px "Space Grotesk", sans-serif'
-  wrapText(ctx, label, 36, 128, WIDTH - 80, 54)
+  ctx.font = '700 28px "Space Grotesk", sans-serif'
+  wrapText(ctx, label, 22, 72, WIDTH - 44, 30)
 
   ctx.fillStyle = 'rgba(255,148,0,0.55)'
   ctx.fillRect(36, HEIGHT - 48, 160, 6)
 
   const texture = new CanvasTexture(canvas)
   texture.colorSpace = SRGBColorSpace
-  texture.anisotropy = 4
+  texture.anisotropy = 1
   texture.generateMipmaps = false
   texture.minFilter = LinearFilter
   texture.magFilter = LinearFilter
@@ -67,6 +67,30 @@ function wrapText(
     }
   }
   ctx.fillText(line, x, y + offset)
+}
+
+export function createHaloTexture() {
+  const size = 256
+  const canvas = document.createElement('canvas')
+  canvas.width = size
+  canvas.height = size
+  const ctx = canvas.getContext('2d')
+  if (!ctx) return new CanvasTexture(canvas)
+  const glow = ctx.createRadialGradient(size / 2, size / 2, size * 0.16, size / 2, size / 2, size * 0.5)
+  glow.addColorStop(0, 'rgba(255, 177, 74, 0)')
+  glow.addColorStop(0.34, 'rgba(255, 177, 74, 0)')
+  glow.addColorStop(0.46, 'rgba(255, 177, 74, 0.35)')
+  glow.addColorStop(0.58, 'rgba(255, 148, 0, 0.95)')
+  glow.addColorStop(0.72, 'rgba(255, 106, 0, 0.5)')
+  glow.addColorStop(1, 'rgba(240, 68, 0, 0)')
+  ctx.fillStyle = glow
+  ctx.fillRect(0, 0, size, size)
+  const texture = new CanvasTexture(canvas)
+  texture.colorSpace = SRGBColorSpace
+  texture.generateMipmaps = false
+  texture.minFilter = LinearFilter
+  texture.magFilter = LinearFilter
+  return texture
 }
 
 export function useScreenTexture(label: string, kicker?: string) {

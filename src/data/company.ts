@@ -11,8 +11,8 @@ export const companyFacts = {
   foundedPlace: 'Pakistan',
   registeredYear: 2025,
   registeredPlace: 'United Kingdom',
-  teamCount: 12,
-  teamNote: 'A twelve-person student team behind the brands, working from desks across the map.',
+  teamCount: 9,
+  teamNote: 'A nine-person student team behind the brands.',
   shortDescription:
     'A faceless content company creating work that makes a positive difference, while opening job opportunities for students in developing countries.',
 }

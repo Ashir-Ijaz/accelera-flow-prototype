@@ -215,7 +215,7 @@ export function PresenceSection() {
         <SectionHeading
           kicker="Presence"
           title="Desks across the map."
-          body="Drag to turn the globe. Hover a pin for the people at that desk."
+          body="Drag to turn the globe. Hover a pin for that desk."
         />
         <div
           ref={globeRef}

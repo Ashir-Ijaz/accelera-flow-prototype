@@ -1,5 +1,5 @@
 import { founder } from '../../data/company'
-import { media } from '../../data/media'
+import { teamMedia } from '../../data/media'
 import { DummyImage } from '../ui/DummyImage'
 import { Reveal } from '../animation/Reveal'
 
@@ -8,7 +8,7 @@ export function FounderSection() {
     <section className="section" aria-labelledby="founder-title">
       <Reveal className="section__inner founder">
         <div className="founder__portrait">
-          <DummyImage src={media.board} className="hero-visual__image" />
+          <DummyImage src={teamMedia.aoun} width={900} height={1125} className="hero-visual__image" />
         </div>
         <div>
           <p className="section-heading__kicker">Founder</p>

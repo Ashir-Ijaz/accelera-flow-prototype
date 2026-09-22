@@ -1,7 +1,8 @@
 import type { CSSProperties, PointerEvent as ReactPointerEvent } from 'react'
 import { useRef } from 'react'
 import type { Channel } from '../../types'
-import { channelMedia, media } from '../../data/media'
+import { platformLabels } from '../../data/channels'
+import { channelBanners, brandBanners } from '../../data/media'
 import { DummyImage } from './DummyImage'
 
 type ChannelCardProps = {
@@ -13,6 +14,7 @@ type ChannelCardProps = {
 
 export function ChannelCard({ channel, active = false, compact = false, style }: ChannelCardProps) {
   const ref = useRef<HTMLAnchorElement>(null)
+  const banner = channelBanners[channel.id] ?? brandBanners.fallback
 
   const onMove = (event: ReactPointerEvent<HTMLAnchorElement>) => {
     const node = ref.current
@@ -39,10 +41,19 @@ export function ChannelCard({ channel, active = false, compact = false, style }:
       onPointerLeave={onLeave}
     >
       <div>
-        <div className={`channel-thumb${channel.platform === 'youtube' ? ' is-yt' : ''}`}>
-          <DummyImage src={channelMedia[channel.id] ?? media.flow} alt="" />
+        <div
+          className={`channel-thumb is-${channel.platform === 'youtube' ? 'yt' : channel.platform === 'tiktok' ? 'tt' : channel.platform === 'facebook' ? 'fb' : 'ig'}`}
+        >
+          {compact ? (
+            <>
+              <DummyImage className="channel-thumb__blur" src={banner.stage} width={1400} height={933} alt="" />
+              <DummyImage className="channel-thumb__art" src={banner.stage} width={1400} height={933} alt="" />
+            </>
+          ) : (
+            <DummyImage src={banner.card} width={banner.width} height={banner.height} alt="" />
+          )}
         </div>
-        <small>{channel.platform}</small>
+        <small>{platformLabels[channel.platform]}</small>
         <h3>{channel.name}</h3>
       </div>
       {compact ? null : <span className="btn btn--ghost">View channel</span>}

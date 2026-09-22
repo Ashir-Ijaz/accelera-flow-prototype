@@ -1,5 +1,5 @@
 import { AnimatePresence, motion } from 'framer-motion'
-import { flowStages } from '../../data/flowStages'
+import { chipMatchesScreen, flowStages } from '../../data/flowStages'
 import { MagneticButton } from '../animation/MagneticButton'
 import type { FlowStage } from '../../types'
 import { usePrefersReducedMotion } from '../../hooks/usePrefersReducedMotion'
@@ -7,15 +7,15 @@ import { usePrefersReducedMotion } from '../../hooks/usePrefersReducedMotion'
 type ScrollStageCopyProps = {
   stage: FlowStage
   focusIndex?: number
+  activeScreen?: string
 }
 
 const ease = [0.22, 1, 0.36, 1] as const
 
-export function ScrollStageCopy({ stage, focusIndex = 0 }: ScrollStageCopyProps) {
+export function ScrollStageCopy({ stage, focusIndex = 0, activeScreen }: ScrollStageCopyProps) {
   const reduced = usePrefersReducedMotion()
   const flip = stage.alignment === 'right' || stage.alignment === 'right-centre'
   const enterX = flip ? 32 : -32
-  const chipX = flip ? -48 : 48
 
   return (
     <div className={`flow-engine__copy${flip ? ' is-flip' : ''}`}>
@@ -62,58 +62,35 @@ export function ScrollStageCopy({ stage, focusIndex = 0 }: ScrollStageCopyProps)
       </AnimatePresence>
       <aside className="board-rail" aria-hidden="true">
         <div className="board-rail__stack">
-          <AnimatePresence mode="popLayout">
-            {stage.boards.slice(0, 4).map((board, index) => (
-              <motion.article
-                key={board}
-                className={`board-chip${index === focusIndex ? ' is-on' : ''}`}
-                layout
-                layoutId={`board-${board}`}
-                initial={
-                  reduced
-                    ? { opacity: 0 }
-                    : {
-                        opacity: 0,
-                        x: chipX,
-                        y: 22,
-                        rotateY: flip ? 58 : -58,
-                        rotateX: 8,
-                        scale: 0.84,
-                      }
-                }
-                animate={{
-                  opacity: 1,
-                  x: 0,
-                  y: 0,
-                  rotateY: 0,
-                  rotateX: 0,
-                  scale: index === focusIndex ? 1.06 : 1,
-                }}
-                exit={
-                  reduced
-                    ? { opacity: 0 }
-                    : {
-                        opacity: 0,
-                        x: -chipX * 0.65,
-                        y: -14,
-                        rotateY: flip ? -42 : 42,
-                        scale: 0.9,
-                      }
-                }
-                transition={{
-                  duration: reduced ? 0.18 : 0.52,
-                  delay: reduced ? 0 : index * 0.09,
-                  ease,
-                }}
-              >
-                <div className="board-chip__face">
-                  <span className="board-chip__index">{String(index + 1).padStart(2, '0')}</span>
-                  <span className="board-chip__label">{board}</span>
-                  <i className="board-chip__live" aria-hidden="true" />
-                  <b className="board-chip__sheen" aria-hidden="true" />
-                </div>
-              </motion.article>
-            ))}
+          <AnimatePresence>
+            {stage.boards.slice(0, 4).map((board, index) => {
+              const isOn = activeScreen ? chipMatchesScreen(board, activeScreen) : index === focusIndex
+              return (
+                <motion.article
+                  key={`${stage.key}-${board}`}
+                  className={`board-chip${isOn ? ' is-on' : ''}`}
+                  initial={reduced ? { opacity: 0 } : { opacity: 0, y: 10, scale: 0.96 }}
+                  animate={{
+                    opacity: 1,
+                    y: 0,
+                    scale: isOn ? 1.05 : 1,
+                  }}
+                  exit={reduced ? { opacity: 0 } : { opacity: 0, y: 8, scale: 0.96 }}
+                  transition={{
+                    duration: reduced ? 0.18 : 0.36,
+                    delay: reduced ? 0 : index * 0.05,
+                    ease,
+                  }}
+                >
+                  <div className="board-chip__face">
+                    <span className="board-chip__index">{String(index + 1).padStart(2, '0')}</span>
+                    <span className="board-chip__label">{board}</span>
+                    <i className="board-chip__live" aria-hidden="true" />
+                    <b className="board-chip__sheen" aria-hidden="true" />
+                  </div>
+                </motion.article>
+              )
+            })}
           </AnimatePresence>
         </div>
       </aside>

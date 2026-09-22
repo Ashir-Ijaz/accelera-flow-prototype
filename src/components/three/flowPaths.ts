@@ -1,6 +1,8 @@
 import { CatmullRomCurve3, Vector3 } from 'three'
 import { channels } from '../../data/channels'
-import { contentScreenLabels } from '../../data/flowStages'
+import { carouselVisual, chipMatchesScreen, contentScreenLabels } from '../../data/flowStages'
+
+export { carouselVisual, chipMatchesScreen }
 
 export type MutableProgress = {
   value: number
@@ -54,7 +56,7 @@ export function createFlowCurves() {
 export function createCameraPath() {
   return new CatmullRomCurve3(
     [
-      new Vector3(0.16, 2.82, 16.2),
+      new Vector3(0.22, 4.15, 24.5),
       new Vector3(-6.8, 2.6, 8.8),
       new Vector3(-7.4, 1.35, 0.6),
       new Vector3(-2.8, 0.7, -5.4),
@@ -92,16 +94,33 @@ export function createLookPath() {
   )
 }
 
+export const openingCameraPosition = [0.22, 4.15, 24.5] as const
+
+export function createCardLinkCurve() {
+  return new CatmullRomCurve3(
+    contentScreens.map((screen) => new Vector3(screen.position[0], screen.position[1] - 0.55, screen.position[2])),
+    false,
+    'catmullrom',
+    0.42,
+  )
+}
+
 export const contentScreens = [
   { label: contentScreenLabels[0], position: [-6.4, 1.15, -1.6] as const, size: [2.2, 1.32] as const },
   { label: contentScreenLabels[1], position: [-3.2, 2.1, -3.8] as const, size: [2.1, 1.26] as const },
   { label: contentScreenLabels[2], position: [-0.4, -0.4, -5.6] as const, size: [2.05, 1.22] as const },
   { label: contentScreenLabels[3], position: [2.6, 1.4, -4.4] as const, size: [2.3, 1.38] as const },
   { label: contentScreenLabels[4], position: [6.2, 1.9, 0.6] as const, size: [2.1, 1.26] as const },
-  { label: contentScreenLabels[5], position: [7.4, -0.2, 4.6] as const, size: [2.0, 1.2] as const },
-  { label: contentScreenLabels[6], position: [5.8, 0.55, 9.2] as const, size: [2.15, 1.3] as const },
-  { label: contentScreenLabels[7], position: [1.2, 2.6, 10.4] as const, size: [1.95, 1.16] as const },
-  { label: contentScreenLabels[8], position: [-4.6, 1.5, 11.8] as const, size: [2.1, 1.26] as const },
+  { label: contentScreenLabels[5], position: [6.8, 1.1, 1.8] as const, size: [2.05, 1.22] as const },
+  { label: contentScreenLabels[6], position: [7.1, 0.4, 3.1] as const, size: [2.05, 1.22] as const },
+  { label: contentScreenLabels[7], position: [7.4, -0.2, 4.6] as const, size: [2.1, 1.26] as const },
+  { label: contentScreenLabels[8], position: [6.6, 0.2, 6.8] as const, size: [2.0, 1.2] as const },
+  { label: contentScreenLabels[9], position: [5.8, 0.55, 9.2] as const, size: [2.15, 1.3] as const },
+  { label: contentScreenLabels[10], position: [1.2, 2.6, 10.4] as const, size: [1.95, 1.16] as const },
+  { label: contentScreenLabels[11], position: [-4.6, 1.5, 11.8] as const, size: [2.1, 1.26] as const },
+  { label: contentScreenLabels[12], position: [-5.2, 2.0, 13.2] as const, size: [2.0, 1.2] as const },
+  { label: contentScreenLabels[13], position: [-3.8, 2.4, 14.6] as const, size: [2.05, 1.22] as const },
+  { label: contentScreenLabels[14], position: [-1.2, 2.8, 15.4] as const, size: [2.1, 1.26] as const },
 ]
 
 export const channelScreens = channels.map((channel, index) => {
@@ -112,13 +131,3 @@ export const channelScreens = channels.map((channel, index) => {
     position: [Math.cos(angle) * 5.8, Math.sin(angle * 1.4) * 1.85, 3.2 + Math.sin(angle) * 2.6] as const,
   }
 })
-
-export const teamPositions = Array.from({ length: 18 }, (_, index) => {
-  const angle = (index / 18) * Math.PI * 2
-  return [
-    Math.cos(angle) * (4.2 + (index % 3) * 1.6),
-    0.4 + Math.sin(index * 1.7) * 2.1,
-    -2.4 + Math.sin(angle * 1.3) * 8.4,
-  ] as const
-})
-
