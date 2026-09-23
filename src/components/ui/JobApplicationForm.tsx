@@ -5,6 +5,7 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { MagneticButton } from '../animation/MagneticButton'
 import { jobRoles } from '../../data/jobs'
 import { submitInbox } from '../../lib/submitInbox'
+import { inboxConfirm } from '../../data/inbox'
 import { FormSuccess } from './FormSuccess'
 
 const schema = z.object({
@@ -20,6 +21,7 @@ type Values = z.infer<typeof schema>
 
 export function JobApplicationForm() {
   const [status, setStatus] = useState<'idle' | 'sending' | 'sent'>('idle')
+  const [mailed, setMailed] = useState(false)
   const [sendError, setSendError] = useState('')
   const {
     register,
@@ -42,7 +44,7 @@ export function JobApplicationForm() {
     setSendError('')
     setStatus('sending')
     try {
-      await submitInbox({
+      const result = await submitInbox({
         subject: `Job application — ${values.name} (${values.role})`,
         kind: 'job',
         fields: {
@@ -54,6 +56,7 @@ export function JobApplicationForm() {
           note: values.note,
         },
       })
+      setMailed(result.mailed)
       setStatus('sent')
     } catch (error) {
       setStatus('idle')
@@ -65,7 +68,7 @@ export function JobApplicationForm() {
     return (
       <FormSuccess
         title="Application received"
-        body="You will receive an email with the next steps if there is a desk that fits."
+        body={inboxConfirm(mailed, 'You will receive an email with the next steps if there is a desk that fits.')}
         actionLabel="Submit another application"
         onReset={() => {
           reset()

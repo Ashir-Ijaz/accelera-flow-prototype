@@ -18,6 +18,8 @@ type PageHeroProps = {
   body?: string
   asideLabel: string
   tone?: VisualTone
+  visual?: string
+  className?: string
   children?: ReactNode
 }
 
@@ -27,10 +29,12 @@ export function PageHero({
   body,
   asideLabel,
   tone = 'flow',
+  visual,
+  className = '',
   children,
 }: PageHeroProps) {
   return (
-    <div className="page-hero">
+    <div className={`page-hero${className ? ` ${className}` : ''}`}>
       <div className="section__inner page-hero__inner">
         <div className="split">
           <div>
@@ -39,7 +43,11 @@ export function PageHero({
             {body ? <p className="lede">{body}</p> : null}
           </div>
           <aside className="hero-visual">
-            <DummyImage src={toneImage[tone]} className="hero-visual__image" />
+            <DummyImage
+              src={visual ?? toneImage[tone]}
+              className="hero-visual__image"
+              loading={visual ? 'eager' : 'lazy'}
+            />
             <span>{asideLabel}</span>
           </aside>
         </div>

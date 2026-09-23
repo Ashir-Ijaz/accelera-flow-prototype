@@ -66,17 +66,11 @@ export const channelMedia: Record<string, string> = Object.fromEntries(
 )
 
 export const serviceMedia: Record<string, string> = {
-  'instagram-page-management': media.ember,
-  'content-creation': media.film,
-  'dm-management': media.signal,
-  'cold-outreach': media.structure,
-  clipping: media.stage,
-}
-
-export const voiceMedia: Record<string, string> = {
-  studying: media.night,
-  skills: media.film,
-  growth: media.ember,
+  'instagram-page-management': `${asset('/media/real/services/instagram-page.webp')}?v=3`,
+  'content-creation': `${asset('/media/real/services/content-creation.webp')}?v=3`,
+  'dm-management': `${asset('/media/real/services/dm-management.webp')}?v=3`,
+  'cold-outreach': `${asset('/media/real/services/cold-outreach.webp')}?v=3`,
+  clipping: `${asset('/media/real/services/clipping.webp')}?v=3`,
 }
 
 export const teamMedia = {
@@ -91,9 +85,22 @@ export const teamMedia = {
   urooba: `${asset('/media/real/team/urooba.webp')}?v=1`,
 } as const
 
-export const resultMedia: Record<string, string> = {
-  'owned-instagram': media.ember,
-  'owned-youtube': media.film,
-  'client-instagram': media.stage,
-  'client-youtube': media.signal,
-}
+export const resultMedia = {
+  sprintMillionaires: `${asset('/media/real/results/IMG_0230.webp')}?v=1`,
+  followersThirty: `${asset('/media/real/results/IMG_0446.webp')}?v=1`,
+  followersSeven: `${asset('/media/real/results/IMG_0471.webp')}?v=1`,
+  sprintReach: `${asset('/media/real/results/IMG_0672.webp')}?v=1`,
+  vyriumReach: `${asset('/media/real/results/IMG_6940-page.webp')}?v=2`,
+  vyriumViews: `${asset('/media/real/results/IMG_7073-page.webp')}?v=2`,
+  millionairesLuxuries: `${asset('/media/real/results/IMG_7090.webp')}?v=1`,
+  dashboardJul: `${asset('/media/real/results/IMG_8431.webp')}?v=1`,
+  growthAug: `${asset('/media/real/results/IMG_9249-page.webp')}?v=2`,
+  theluxuriousdoze: `${asset('/media/real/results/IMG_9943.webp')}?v=1`,
+  luxedoze: `${asset('/media/real/results/IMG_9944.webp')}?v=1`,
+  ytViewsA: `${asset('/media/real/results/yt-01.webp')}?v=1`,
+  ytViewsB: `${asset('/media/real/results/yt-02.webp')}?v=1`,
+  ytViewsC: `${asset('/media/real/results/yt-03.webp')}?v=1`,
+  ytSubsJune: `${asset('/media/real/results/yt-04.webp')}?v=1`,
+  ytChannelNinety: `${asset('/media/real/results/yt-05.webp')}?v=1`,
+  ytViewsD: `${asset('/media/real/results/yt-06.webp')}?v=1`,
+} as const

@@ -45,7 +45,7 @@ export default function AboutPage() {
       <section className="section">
         <div className="section__inner">
           <p className="section-heading__kicker">Voices</p>
-          <h2>Themes behind the work</h2>
+          <h2>Themes behind the work.</h2>
           <Reveal className="voices__track">
             {voiceThemes.map((voice) => (
               <TestimonialPlaceholder key={voice.id} voice={voice} focused />

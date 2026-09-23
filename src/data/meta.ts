@@ -19,7 +19,7 @@ export const pageMeta = {
   results: {
     title: 'Results — Accelera Flow LTD',
     description:
-      'Verified Instagram, YouTube and client results for Accelera Flow LTD will appear here once reporting is approved. No unverified figures are shown.',
+      'Instagram and YouTube boards from Accelera Flow LTD. Figures stay on the original screenshots.',
   },
   about: {
     title: 'About — Accelera Flow LTD',

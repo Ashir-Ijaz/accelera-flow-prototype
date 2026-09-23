@@ -1,4 +1,5 @@
 import { pageMeta } from '../data/meta'
+import { inboxReady } from '../data/inbox'
 import { useDocumentMeta } from '../hooks/useDocumentMeta'
 import { ContactForm } from '../components/ui/ContactForm'
 import { PageHero } from '../components/layout/PageHero'
@@ -11,7 +12,11 @@ export default function ContactPage() {
     <PageHero
       kicker="Contact"
       title="Start a project"
-      body="Tell us what you want to grow. We reply by email with the next details."
+      body={
+        inboxReady()
+          ? 'Tell us what you want to grow. We reply by email with the next details.'
+          : 'Tell us what you want to grow. Submissions stay on this device until a studio inbox email is added.'
+      }
       asideLabel="Enquiry"
       tone="ember"
     >

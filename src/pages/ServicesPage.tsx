@@ -11,14 +11,18 @@ export default function ServicesPage() {
 
   return (
     <PageHero kicker="Services" title="From attention to action." asideLabel="Practices" tone="flow">
-      {services.map((service, index) => (
+      {services.map((service) => (
         <article key={service.id} className="service-detail">
           <div className="hero-visual">
-            <DummyImage src={serviceMedia[service.id] ?? media.flow} className="hero-visual__image" />
-            <span>{String(index + 1).padStart(2, '0')}</span>
+            <DummyImage
+              src={serviceMedia[service.id] ?? media.flow}
+              className="hero-visual__image"
+              width={1600}
+              height={900}
+              loading="eager"
+            />
           </div>
           <div>
-            <p className="placeholder-kicker">{String(index + 1).padStart(2, '0')}</p>
             <h2>{service.title}</h2>
             <p className="lede">{service.description}</p>
             <div className="service-detail__lists">

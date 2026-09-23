@@ -4,6 +4,7 @@ import { z } from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { MagneticButton } from '../animation/MagneticButton'
 import { submitInbox } from '../../lib/submitInbox'
+import { inboxConfirm } from '../../data/inbox'
 import { FormSuccess } from './FormSuccess'
 
 const serviceOptions = [
@@ -27,6 +28,7 @@ type EnquiryValues = z.infer<typeof enquirySchema>
 
 export function ContactForm() {
   const [status, setStatus] = useState<'idle' | 'sending' | 'sent'>('idle')
+  const [mailed, setMailed] = useState(false)
   const [sendError, setSendError] = useState('')
   const {
     register,
@@ -48,7 +50,7 @@ export function ContactForm() {
     setSendError('')
     setStatus('sending')
     try {
-      await submitInbox({
+      const result = await submitInbox({
         subject: `Project enquiry — ${values.name}`,
         kind: 'project',
         fields: {
@@ -59,6 +61,7 @@ export function ContactForm() {
           goals: values.goals,
         },
       })
+      setMailed(result.mailed)
       setStatus('sent')
     } catch (error) {
       setStatus('idle')
@@ -70,7 +73,7 @@ export function ContactForm() {
     return (
       <FormSuccess
         title="Enquiry received"
-        body="You will receive an email with the next details for this project."
+        body={inboxConfirm(mailed, 'You will receive an email with the next details for this project.')}
         actionLabel="Send another enquiry"
         onReset={() => {
           reset()

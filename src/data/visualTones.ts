@@ -32,8 +32,8 @@ export const voiceTone: Record<string, VisualTone> = {
 }
 
 export const resultTone: Record<string, VisualTone> = {
-  'owned-instagram': 'ember',
-  'owned-youtube': 'signal',
-  'client-instagram': 'pulse',
-  'client-youtube': 'board',
+  'sprint-millionaires': 'ember',
+  'vyrium-views': 'pulse',
+  theluxuriousdoze: 'night',
+  luxedoze: 'board',
 }

@@ -6,6 +6,7 @@ import { MagneticButton } from '../animation/MagneticButton'
 import { DummyImage } from './DummyImage'
 import { media } from '../../data/media'
 import { submitInbox } from '../../lib/submitInbox'
+import { inboxConfirm } from '../../data/inbox'
 import { promotionCopy } from '../../data/promotion'
 import { FormSuccess } from './FormSuccess'
 
@@ -24,6 +25,7 @@ type YoutubePromoteFormProps = {
 
 export function YoutubePromoteForm({ onBack }: YoutubePromoteFormProps) {
   const [status, setStatus] = useState<'idle' | 'sending' | 'sent'>('idle')
+  const [mailed, setMailed] = useState(false)
   const [sendError, setSendError] = useState('')
   const {
     register,
@@ -39,7 +41,7 @@ export function YoutubePromoteForm({ onBack }: YoutubePromoteFormProps) {
     setSendError('')
     setStatus('sending')
     try {
-      await submitInbox({
+      const result = await submitInbox({
         subject: `YouTube promotion — ${values.name}`,
         kind: 'youtube-promotion',
         fields: {
@@ -49,6 +51,7 @@ export function YoutubePromoteForm({ onBack }: YoutubePromoteFormProps) {
           promotion_needed: values.brief,
         },
       })
+      setMailed(result.mailed)
       setStatus('sent')
     } catch (error) {
       setStatus('idle')
@@ -83,7 +86,7 @@ export function YoutubePromoteForm({ onBack }: YoutubePromoteFormProps) {
         {status === 'sent' ? (
           <FormSuccess
             title="Request received"
-            body={promotionCopy.confirm}
+            body={inboxConfirm(mailed, promotionCopy.confirm)}
             actionLabel="Send another YouTube brief"
             onReset={() => {
               reset()

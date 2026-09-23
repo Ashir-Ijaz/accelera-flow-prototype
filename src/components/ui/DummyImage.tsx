@@ -6,9 +6,19 @@ type DummyImageProps = {
   sizes?: string
   width?: number
   height?: number
+  loading?: 'lazy' | 'eager'
 }
 
-export function DummyImage({ src, alt = '', className = '', srcSet, sizes, width, height }: DummyImageProps) {
+export function DummyImage({
+  src,
+  alt = '',
+  className = '',
+  srcSet,
+  sizes,
+  width,
+  height,
+  loading = 'lazy',
+}: DummyImageProps) {
   return (
     <img
       src={src}
@@ -18,7 +28,7 @@ export function DummyImage({ src, alt = '', className = '', srcSet, sizes, width
       height={height}
       alt={alt}
       className={`dummy-image ${className}`.trim()}
-      loading="lazy"
+      loading={loading}
       decoding="async"
       draggable={false}
     />

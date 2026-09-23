@@ -93,9 +93,17 @@ export type VoiceTheme = {
   body: string
 }
 
-export type ResultPlaceholder = {
+export type ResultCategory = 'instagram' | 'youtube' | 'client'
+
+export type ResultFilter = 'all' | ResultCategory
+
+export type ResultShot = {
   id: string
-  category: 'instagram' | 'youtube' | 'client'
+  category: ResultCategory
+  kicker: string
   label: string
-  metricFocus: string[]
+  period?: string
+  detail: string
+  visual: string
+  featured?: boolean
 }

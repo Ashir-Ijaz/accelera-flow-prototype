@@ -117,7 +117,7 @@ export function ServicesStorySection() {
         >
           <div ref={trackRef} className="services-story__track">
             {services.map((service, index) => (
-              <ServicePanel key={service.id} service={service} index={index} active={index === active} />
+              <ServicePanel key={service.id} service={service} active={index === active} />
             ))}
           </div>
         </div>

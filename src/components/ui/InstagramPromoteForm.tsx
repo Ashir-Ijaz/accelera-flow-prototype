@@ -7,6 +7,7 @@ import { DummyImage } from './DummyImage'
 import { media } from '../../data/media'
 import { instagramPlacements, promotionCopy, type InstagramPlacementId } from '../../data/promotion'
 import { submitInbox } from '../../lib/submitInbox'
+import { inboxConfirm } from '../../data/inbox'
 import { FormSuccess } from './FormSuccess'
 
 const placementIds = instagramPlacements.map((item) => item.id) as [InstagramPlacementId, ...InstagramPlacementId[]]
@@ -34,6 +35,7 @@ const tileVisual: Record<InstagramPlacementId, string> = {
 
 export function InstagramPromoteForm({ onBack }: InstagramPromoteFormProps) {
   const [status, setStatus] = useState<'idle' | 'sending' | 'sent'>('idle')
+  const [mailed, setMailed] = useState(false)
   const [sendError, setSendError] = useState('')
   const {
     register,
@@ -61,7 +63,7 @@ export function InstagramPromoteForm({ onBack }: InstagramPromoteFormProps) {
       const labels = values.placements.map(
         (id) => instagramPlacements.find((item) => item.id === id)?.title ?? id,
       )
-      await submitInbox({
+      const result = await submitInbox({
         subject: `Instagram promotion — ${values.name}`,
         kind: 'instagram-promotion',
         fields: {
@@ -72,6 +74,7 @@ export function InstagramPromoteForm({ onBack }: InstagramPromoteFormProps) {
           notes: values.notes || 'None',
         },
       })
+      setMailed(result.mailed)
       setStatus('sent')
     } catch (error) {
       setStatus('idle')
@@ -93,7 +96,7 @@ export function InstagramPromoteForm({ onBack }: InstagramPromoteFormProps) {
         {status === 'sent' ? (
           <FormSuccess
             title="Request received"
-            body={promotionCopy.confirm}
+            body={inboxConfirm(mailed, promotionCopy.confirm)}
             actionLabel="Send another Instagram brief"
             onReset={() => {
               reset()

@@ -4,16 +4,14 @@ import { DummyImage } from './DummyImage'
 
 type ServicePanelProps = {
   service: Service
-  index: number
   active?: boolean
 }
 
-export function ServicePanel({ service, index, active = false }: ServicePanelProps) {
+export function ServicePanel({ service, active = false }: ServicePanelProps) {
   return (
     <article className={`service-panel${active ? ' is-active' : ''}`}>
       <div className="service-shot">
-        <DummyImage src={serviceMedia[service.id] ?? media.flow} alt="" />
-        <span>{String(index + 1).padStart(2, '0')}</span>
+        <DummyImage src={serviceMedia[service.id] ?? media.flow} alt="" width={1600} height={900} loading="eager" />
       </div>
       <h3>{service.title}</h3>
     </article>
