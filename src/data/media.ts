@@ -11,6 +11,7 @@ export const media = {
   board: asset('/media/board.webp'),
   pulse: asset('/media/pulse.webp'),
   structure: asset('/media/structure.webp'),
+  finalCta: `${asset('/media/final-cta.webp')}?v=1`,
 } as const
 
 export type BrandBanner = {

@@ -1,5 +1,5 @@
 import { MagneticButton } from '../animation/MagneticButton'
-import { brandBanners } from '../../data/media'
+import { media } from '../../data/media'
 import { DummyImage } from '../ui/DummyImage'
 import { Reveal } from '../animation/Reveal'
 
@@ -15,17 +15,18 @@ export function FinalCtaSection() {
               Promotion
             </MagneticButton>
             <MagneticButton to="/contact">Start a project</MagneticButton>
-            <MagneticButton to="/brands" className="btn btn--ghost">
-              Explore our brands
-            </MagneticButton>
           </div>
+          <MagneticButton to="/brands" className="final-cta__link">
+            Explore our brands
+          </MagneticButton>
         </div>
-        <div className="hero-visual">
+        <div className="hero-visual final-cta__visual">
           <DummyImage
-            src={brandBanners.wealthWhizz.stage}
-            width={brandBanners.wealthWhizz.width}
-            height={brandBanners.wealthWhizz.height}
+            src={media.finalCta}
+            width={1600}
+            height={900}
             className="hero-visual__image"
+            loading="eager"
           />
         </div>
       </Reveal>

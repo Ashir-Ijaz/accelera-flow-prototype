@@ -4,7 +4,7 @@ import { z } from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { MagneticButton } from '../animation/MagneticButton'
 import { DummyImage } from './DummyImage'
-import { brandBanners } from '../../data/media'
+import { media } from '../../data/media'
 import { instagramPlacements, promotionCopy, type InstagramPlacementId } from '../../data/promotion'
 import { submitInbox } from '../../lib/submitInbox'
 import { inboxConfirm } from '../../data/inbox'
@@ -27,10 +27,10 @@ type InstagramPromoteFormProps = {
 }
 
 const tileVisual: Record<InstagramPlacementId, string> = {
-  'story-24': brandBanners.wealthWhizz.stage,
-  'feed-24': brandBanners.neuromatrix.src,
-  reel: brandBanners.anonhabit.stage,
-  'feed-permanent': brandBanners.rebootWithAsh.stage,
+  'story-24': media.night,
+  'feed-24': media.ember,
+  reel: media.pulse,
+  'feed-permanent': media.structure,
 }
 
 export function InstagramPromoteForm({ onBack }: InstagramPromoteFormProps) {
@@ -112,11 +112,7 @@ export function InstagramPromoteForm({ onBack }: InstagramPromoteFormProps) {
                 ))}
               </div>
               <div className="ig-phone__screen">
-                <DummyImage
-                  src={brandBanners.wealthWhizz.stage}
-                  width={brandBanners.wealthWhizz.width}
-                  height={brandBanners.wealthWhizz.height}
-                />
+                <DummyImage src={media.pulse} />
               </div>
             </aside>
             <div className="ig-studio__fields">
