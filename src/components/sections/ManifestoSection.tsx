@@ -1,5 +1,5 @@
 import { campaign } from '../../data/company'
-import { media } from '../../data/media'
+import { brandBanners } from '../../data/media'
 import { DummyImage } from '../ui/DummyImage'
 import { Reveal } from '../animation/Reveal'
 
@@ -20,7 +20,12 @@ export function ManifestoSection() {
           </p>
         </div>
         <div className="hero-visual">
-          <DummyImage src={media.flow} className="hero-visual__image" />
+          <DummyImage
+            src={brandBanners.neuromatrix.src}
+            width={brandBanners.neuromatrix.width}
+            height={brandBanners.neuromatrix.height}
+            className="hero-visual__image"
+          />
         </div>
       </Reveal>
     </section>

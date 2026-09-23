@@ -169,7 +169,6 @@ export const resultFilters: { id: ResultFilter; label: string }[] = [
 
 export function resultsForFilter(filter: ResultFilter) {
   if (filter === 'all') return resultShots
-  if (filter === 'instagram') return resultShots.filter((item) => item.category !== 'youtube')
   return resultShots.filter((item) => item.category === filter)
 }
 

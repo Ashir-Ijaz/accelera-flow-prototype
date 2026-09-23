@@ -4,7 +4,7 @@ import { z } from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { MagneticButton } from '../animation/MagneticButton'
 import { DummyImage } from './DummyImage'
-import { media } from '../../data/media'
+import { brandBanners } from '../../data/media'
 import { submitInbox } from '../../lib/submitInbox'
 import { inboxConfirm } from '../../data/inbox'
 import { promotionCopy } from '../../data/promotion'
@@ -70,7 +70,11 @@ export function YoutubePromoteForm({ onBack }: YoutubePromoteFormProps) {
           <h1 id="yt-studio-title">{promotionCopy.youtube.title}</h1>
           <p className="lede">{promotionCopy.youtube.body}</p>
           <div className="yt-studio__screen">
-            <DummyImage src={media.film} />
+            <DummyImage
+              src={brandBanners.cyzmify.stage}
+              width={brandBanners.cyzmify.width}
+              height={brandBanners.cyzmify.height}
+            />
             <span className="choice-card__play" aria-hidden="true" />
             <div className="yt-studio__ticker">
               <i />

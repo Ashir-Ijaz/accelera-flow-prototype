@@ -1,13 +1,18 @@
 import { Link } from 'react-router-dom'
 import { DummyImage } from './DummyImage'
-import { media } from '../../data/media'
+import { brandBanners } from '../../data/media'
 
 export function PlatformChoiceGrid() {
   return (
     <div className="choice-grid">
       <Link to="/promote/youtube" className="choice-card choice-card--yt">
         <div className="choice-card__screen">
-          <DummyImage src={media.film} className="choice-card__shot" />
+          <DummyImage
+            src={brandBanners.cyzmify.stage}
+            width={brandBanners.cyzmify.width}
+            height={brandBanners.cyzmify.height}
+            className="choice-card__shot"
+          />
           <span className="choice-card__play" aria-hidden="true" />
           <em>On air</em>
         </div>
@@ -20,13 +25,25 @@ export function PlatformChoiceGrid() {
       <Link to="/promote/instagram" className="choice-card choice-card--ig">
         <div className="choice-card__phones" aria-hidden="true">
           <figure>
-            <DummyImage src={media.night} />
+            <DummyImage
+              src={brandBanners.wealthWhizz.stage}
+              width={brandBanners.wealthWhizz.width}
+              height={brandBanners.wealthWhizz.height}
+            />
           </figure>
           <figure>
-            <DummyImage src={media.pulse} />
+            <DummyImage
+              src={brandBanners.neuromatrix.src}
+              width={brandBanners.neuromatrix.width}
+              height={brandBanners.neuromatrix.height}
+            />
           </figure>
           <figure>
-            <DummyImage src={media.ember} />
+            <DummyImage
+              src={brandBanners.anonhabit.stage}
+              width={brandBanners.anonhabit.width}
+              height={brandBanners.anonhabit.height}
+            />
           </figure>
         </div>
         <div className="choice-card__copy">

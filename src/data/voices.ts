@@ -3,23 +3,23 @@ import type { VoiceTheme } from '../types'
 export const voiceThemes: VoiceTheme[] = [
   {
     id: 'studying',
-    kicker: 'Theme',
+    kicker: 'Team story',
     title: 'Working while studying',
-    theme: 'Awaiting a verified line',
-    body: 'A line from the team will sit here. Nothing is invented for this card.',
+    theme: 'Name to be added',
+    body: 'Role to be added. Testimonial to be added. Faceless work still has people behind it — their line will sit here once it is supplied.',
   },
   {
     id: 'skills',
-    kicker: 'Theme',
+    kicker: 'Team story',
     title: 'Skills developed',
-    theme: 'Awaiting a verified line',
-    body: 'A line from the team will sit here. Nothing is invented for this card.',
+    theme: 'Name to be added',
+    body: 'Role to be added. Testimonial to be added. Nothing invented for this card until a verified line arrives.',
   },
   {
     id: 'growth',
-    kicker: 'Theme',
+    kicker: 'Team story',
     title: 'Professional growth',
-    theme: 'Awaiting a verified line',
-    body: 'A line from the team will sit here. Nothing is invented for this card.',
+    theme: 'Name to be added',
+    body: 'Role to be added. Testimonial to be added. The theme stays; the person and quote wait for approval.',
   },
 ]

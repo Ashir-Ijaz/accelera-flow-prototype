@@ -1,5 +1,5 @@
 import { MagneticButton } from '../animation/MagneticButton'
-import { media } from '../../data/media'
+import { brandBanners } from '../../data/media'
 import { DummyImage } from '../ui/DummyImage'
 import { Reveal } from '../animation/Reveal'
 
@@ -21,7 +21,12 @@ export function FinalCtaSection() {
           </div>
         </div>
         <div className="hero-visual">
-          <DummyImage src={media.ember} className="hero-visual__image" />
+          <DummyImage
+            src={brandBanners.wealthWhizz.stage}
+            width={brandBanners.wealthWhizz.width}
+            height={brandBanners.wealthWhizz.height}
+            className="hero-visual__image"
+          />
         </div>
       </Reveal>
     </section>

@@ -33,6 +33,11 @@ export default function ResultsPage() {
             </button>
           ))}
         </div>
+        <ul className="tag-list">
+          <li>Screenshots only</li>
+          <li>Figures stay on the shot</li>
+          <li>No invented totals</li>
+        </ul>
       </PageHero>
       {items.length > 0 ? (
         <ResultsFilm key={filter} items={items} />

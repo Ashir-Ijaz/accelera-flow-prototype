@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom'
 import { ArrowUp } from 'lucide-react'
 import { channelsForPlatform, platformLabels, platformOrder } from '../../data/channels'
 import { companyFacts } from '../../data/company'
+import { inboxEmail, inboxReady } from '../../data/inbox'
 import { navItems } from '../../data/navigation'
 import { useLenisInstance } from '../../hooks/useLenisInstance'
 import { BrandLogo } from '../ui/BrandLogo'
@@ -13,6 +14,7 @@ export function Footer() {
   const lenis = useLenisInstance()
   const [newsletter, setNewsletter] = useState<'idle' | 'done'>('idle')
   const year = new Date().getFullYear()
+  const studioEmail = inboxEmail()
 
   const toTop = () => {
     if (lenis) lenis.scrollTo(0, { duration: 1.1 })
@@ -64,7 +66,13 @@ export function Footer() {
               This prototype newsletter does not send externally. No list was updated.
             </p>
           )}
-          <p className="note">Business email to be added</p>
+          {studioEmail ? (
+            <p className="note">
+              <a href={`mailto:${studioEmail}`}>{studioEmail}</a>
+            </p>
+          ) : (
+            <p className="note">{inboxReady() ? 'Studio inbox is connected for forms.' : 'Business email to be added'}</p>
+          )}
         </div>
       </div>
       <div className="footer__owned">
@@ -83,9 +91,7 @@ export function Footer() {
         </div>
       </div>
       <div className="footer__base">
-        <p>
-          © {year} Accelera Flow LTD. All rights reserved.
-        </p>
+        <p>© {year} Accelera Flow LTD. All rights reserved.</p>
         <button type="button" className="back-to-top" onClick={toTop}>
           Back to top <ArrowUp size={14} />
         </button>
