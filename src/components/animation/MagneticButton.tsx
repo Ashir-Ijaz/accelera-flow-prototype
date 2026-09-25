@@ -1,6 +1,7 @@
-import type { PointerEvent as ReactPointerEvent, ReactNode } from 'react'
+import type { ReactNode } from 'react'
 import { Link } from 'react-router-dom'
 import { usePrefersReducedMotion } from '../../hooks/usePrefersReducedMotion'
+import { useMagnetic } from '../../hooks/useMagnetic'
 
 type MagneticButtonProps = {
   to?: string
@@ -10,18 +11,8 @@ type MagneticButtonProps = {
   className?: string
   type?: 'button' | 'submit' | 'reset'
   disabled?: boolean
-}
-
-function tiltTowardPointer(event: ReactPointerEvent<HTMLElement>, strength: number) {
-  const node = event.currentTarget
-  const rect = node.getBoundingClientRect()
-  const x = event.clientX - rect.left - rect.width / 2
-  const y = event.clientY - rect.top - rect.height / 2
-  node.style.transform = `translate(${(x / rect.width) * strength}px, ${(y / rect.height) * strength}px)`
-}
-
-function resetTilt(event: ReactPointerEvent<HTMLElement>) {
-  event.currentTarget.style.transform = 'translate(0px, 0px)'
+  strength?: number
+  scale?: number
 }
 
 export function MagneticButton({
@@ -32,19 +23,29 @@ export function MagneticButton({
   className = 'btn btn--primary',
   type = 'button',
   disabled,
+  strength = 22,
+  scale = 1.05,
 }: MagneticButtonProps) {
   const reduced = usePrefersReducedMotion()
-  const strength = reduced ? 0 : 14
-  const classNames = `${className} magnetic`
-  const onMove = reduced
-    ? undefined
-    : (event: ReactPointerEvent<HTMLElement>) => tiltTowardPointer(event, strength)
-  const onLeave = resetTilt
+  const { ref, onPointerMove, onPointerLeave } = useMagnetic<HTMLElement>({
+    strength: reduced ? 0 : strength,
+    scale: reduced ? 1 : scale,
+    ease: 0.18,
+    enabled: !reduced && !disabled,
+  })
+  const classNames = `${className} magnetic magnetic--btn`
 
   if (to) {
     return (
-      <Link to={to} className={classNames} onPointerMove={onMove} onPointerLeave={onLeave}>
-        {children}
+      <Link
+        ref={ref as React.RefObject<HTMLAnchorElement>}
+        to={to}
+        className={classNames}
+        onClick={onClick}
+        onPointerMove={onPointerMove}
+        onPointerLeave={onPointerLeave}
+      >
+        <span className="magnetic__label">{children}</span>
       </Link>
     )
   }
@@ -52,28 +53,31 @@ export function MagneticButton({
   if (href) {
     return (
       <a
+        ref={ref as React.RefObject<HTMLAnchorElement>}
         href={href}
         className={classNames}
-        onPointerMove={onMove}
-        onPointerLeave={onLeave}
+        onClick={onClick}
+        onPointerMove={onPointerMove}
+        onPointerLeave={onPointerLeave}
         target="_blank"
         rel="noopener noreferrer"
       >
-        {children}
+        <span className="magnetic__label">{children}</span>
       </a>
     )
   }
 
   return (
     <button
+      ref={ref as React.RefObject<HTMLButtonElement>}
       type={type}
       className={classNames}
       onClick={onClick}
       disabled={disabled}
-      onPointerMove={onMove}
-      onPointerLeave={onLeave}
+      onPointerMove={onPointerMove}
+      onPointerLeave={onPointerLeave}
     >
-      {children}
+      <span className="magnetic__label">{children}</span>
     </button>
   )
 }

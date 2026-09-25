@@ -27,4 +27,8 @@ dist-ssr
 *.sw?
 
 tmp
+.tmp-verify
+hero-start.png
+*.tmp-card.webp
+*.tmp-stage.webp
 .netlify

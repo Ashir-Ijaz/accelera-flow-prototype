@@ -29,19 +29,29 @@ export function FlowEngineSection() {
     const node = pinRef.current
     if (!node) return
 
-    const sync = () => {
-      const rect = node.getBoundingClientRect()
-      const near = rect.bottom > 0 && rect.top < window.innerHeight
-      setActive(near && document.visibilityState === 'visible')
+    const sync = (entries?: IntersectionObserverEntry[]) => {
+      const visible =
+        entries?.[0]?.isIntersecting ??
+        (() => {
+          const rect = node.getBoundingClientRect()
+          const pad = window.innerHeight * 0.4
+          return rect.bottom > -pad && rect.top < window.innerHeight + pad
+        })()
+      setActive(Boolean(visible) && document.visibilityState === 'visible')
     }
 
-    const observer = new IntersectionObserver(sync, { rootMargin: '12% 0px', threshold: 0 })
+    // Keep WebGL alive while approaching / leaving the sticky pin
+    const observer = new IntersectionObserver((entries) => sync(entries), {
+      rootMargin: '40% 0px',
+      threshold: 0,
+    })
     observer.observe(node)
-    document.addEventListener('visibilitychange', sync)
+    const onVis = () => sync()
+    document.addEventListener('visibilitychange', onVis)
     sync()
     return () => {
       observer.disconnect()
-      document.removeEventListener('visibilitychange', sync)
+      document.removeEventListener('visibilitychange', onVis)
     }
   }, [reduced])
 
@@ -55,7 +65,7 @@ export function FlowEngineSection() {
         trigger: section,
         start: 'top top',
         end: 'bottom bottom',
-        scrub: 0.22,
+        scrub: true,
         invalidateOnRefresh: true,
         onUpdate: (self) => {
           progressRef.current.value = self.progress

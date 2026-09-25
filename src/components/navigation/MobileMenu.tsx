@@ -2,9 +2,10 @@ import { useEffect } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
 import { NavLink, useLocation } from 'react-router-dom'
 import { X } from 'lucide-react'
-import { navItems, primaryCta, promoteCta } from '../../data/navigation'
+import { navItems, primaryCta, promoteCta, COMPANY_NAME } from '../../data/navigation'
 import { useLockedBody } from '../../hooks/useLockedBody'
 import { useLenisInstance } from '../../hooks/useLenisInstance'
+import { usePrefersReducedMotion } from '../../hooks/usePrefersReducedMotion'
 import { MagneticButton } from '../animation/MagneticButton'
 import { BrandLogo } from '../ui/BrandLogo'
 
@@ -13,9 +14,12 @@ type MobileMenuProps = {
   onClose: () => void
 }
 
+const ease = [0.22, 1, 0.36, 1] as const
+
 export function MobileMenu({ open, onClose }: MobileMenuProps) {
   const location = useLocation()
   const lenis = useLenisInstance()
+  const reduced = usePrefersReducedMotion()
   useLockedBody(open)
 
   useEffect(() => {
@@ -42,42 +46,96 @@ export function MobileMenu({ open, onClose }: MobileMenuProps) {
     <AnimatePresence>
       {open ? (
         <motion.div
-          className="mobile-menu"
-          initial={{ clipPath: 'inset(0 0 100% 0)' }}
-          animate={{ clipPath: 'inset(0 0 0% 0)' }}
-          exit={{ clipPath: 'inset(0 0 100% 0)' }}
-          transition={{ duration: 0.55, ease: [0.22, 1, 0.36, 1] }}
+          className="fullscreen-nav"
           role="dialog"
           aria-modal="true"
-          aria-label="Mobile navigation"
+          aria-label="Site navigation"
+          initial={reduced ? false : { opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={reduced ? undefined : { opacity: 0 }}
+          transition={{ duration: 0.28, ease }}
         >
-          <div className="mobile-menu__top">
-            <BrandLogo />
-            <button type="button" className="mobile-menu__close" onClick={onClose} aria-label="Close menu">
-              <X size={18} />
-            </button>
-          </div>
-          <nav className="mobile-menu__links" aria-label="Mobile">
-            {navItems.map((item, index) => (
+          {!reduced ? (
+            <>
               <motion.div
-                key={item.path}
-                initial={{ y: 24, opacity: 0 }}
-                animate={{ y: 0, opacity: 1 }}
-                transition={{ delay: 0.08 + index * 0.05, duration: 0.4 }}
-              >
-                <NavLink to={item.path} className="mobile-menu__link" onClick={onClose}>
-                  {item.label}
-                </NavLink>
-              </motion.div>
-            ))}
-          </nav>
-          <div className="mobile-menu__ctas">
-            <MagneticButton to={promoteCta.path} className="btn btn--promote mobile-menu__cta">
-              {promoteCta.label}
-            </MagneticButton>
-            <MagneticButton to={primaryCta.path} className="btn btn--primary mobile-menu__cta">
-              {primaryCta.label}
-            </MagneticButton>
+                className="fullscreen-nav__veil"
+                initial={{ clipPath: 'inset(0 0 100% 0)' }}
+                animate={{ clipPath: 'inset(0 0 0% 0)' }}
+                exit={{ clipPath: 'inset(0 0 100% 0)' }}
+                transition={{ duration: 0.7, ease }}
+              />
+              <motion.span
+                className="fullscreen-nav__blade"
+                aria-hidden="true"
+                initial={{ y: '-20%', opacity: 0 }}
+                animate={{ y: ['-20%', '120%'], opacity: [0, 1, 1, 0] }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.85, times: [0, 0.15, 0.7, 1], ease, delay: 0.05 }}
+              />
+              <motion.div
+                className="fullscreen-nav__glow"
+                aria-hidden="true"
+                initial={{ opacity: 0, scale: 0.7 }}
+                animate={{ opacity: [0, 0.7, 0.25], scale: [0.7, 1.05, 1.2] }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 1.1, times: [0, 0.4, 1], ease, delay: 0.12 }}
+              />
+            </>
+          ) : (
+            <div className="fullscreen-nav__veil" />
+          )}
+
+          <div className="fullscreen-nav__inner">
+            <div className="fullscreen-nav__top">
+              <BrandLogo />
+              <button type="button" className="fullscreen-nav__close" onClick={onClose} aria-label="Close menu">
+                <X size={18} />
+                <span>Close</span>
+              </button>
+            </div>
+
+            <nav className="fullscreen-nav__links" aria-label="Primary">
+              {navItems.map((item, index) => (
+                <motion.div
+                  key={item.path}
+                  className="fullscreen-nav__row"
+                  initial={reduced ? false : { y: '110%', opacity: 0 }}
+                  animate={{ y: 0, opacity: 1 }}
+                  exit={reduced ? undefined : { y: '40%', opacity: 0 }}
+                  transition={{ duration: 0.62, delay: reduced ? 0 : 0.18 + index * 0.055, ease }}
+                >
+                  <NavLink
+                    to={item.path}
+                    className={({ isActive }) => `fullscreen-nav__link${isActive ? ' is-active' : ''}`}
+                    onClick={onClose}
+                    end={item.path === '/'}
+                  >
+                    <span className="fullscreen-nav__label">{item.label}</span>
+                    <span className="fullscreen-nav__hint" aria-hidden="true">
+                      Open
+                    </span>
+                  </NavLink>
+                </motion.div>
+              ))}
+            </nav>
+
+            <motion.div
+              className="fullscreen-nav__foot"
+              initial={reduced ? false : { opacity: 0, y: 18 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={reduced ? undefined : { opacity: 0 }}
+              transition={{ duration: 0.5, delay: reduced ? 0 : 0.45, ease }}
+            >
+              <p className="fullscreen-nav__mark">{COMPANY_NAME}</p>
+              <div className="fullscreen-nav__ctas">
+                <MagneticButton to={promoteCta.path} className="btn btn--promote fullscreen-nav__cta">
+                  {promoteCta.label}
+                </MagneticButton>
+                <MagneticButton to={primaryCta.path} className="btn btn--primary fullscreen-nav__cta">
+                  {primaryCta.label}
+                </MagneticButton>
+              </div>
+            </motion.div>
           </div>
         </motion.div>
       ) : null}

@@ -8,126 +8,145 @@ export type MutableProgress = {
   value: number
 }
 
-export function createFlowCurves() {
-  const ribbonA = new CatmullRomCurve3([
-    new Vector3(-8.4, 2.4, -6.2),
-    new Vector3(-5.2, 1.5, -2.1),
-    new Vector3(-1.1, 0.7, 0.3),
-    new Vector3(1.6, 1.9, 1.4),
-    new Vector3(3.4, -0.5, 4.6),
-    new Vector3(0.8, 1.1, 8.4),
-  ], false, 'catmullrom', 0.35)
+/**
+ * Staggered gallery: alternating height + lateral offset + clear depth steps
+ * so consecutive cards rarely share the same silhouette from camera.
+ */
+export const contentScreens = [
+  { label: contentScreenLabels[0], position: [-2.9, 1.35, 0.0] as const, size: [2.3, 1.38] as const },
+  { label: contentScreenLabels[1], position: [-0.85, 2.15, -1.85] as const, size: [2.2, 1.32] as const },
+  { label: contentScreenLabels[2], position: [1.35, 0.55, -3.5] as const, size: [2.2, 1.32] as const },
+  { label: contentScreenLabels[3], position: [3.05, 1.7, -2.0] as const, size: [2.35, 1.41] as const },
+  { label: contentScreenLabels[4], position: [3.35, 0.7, 0.15] as const, size: [2.2, 1.32] as const },
+  { label: contentScreenLabels[5], position: [2.15, 1.95, 2.15] as const, size: [2.2, 1.32] as const },
+  { label: contentScreenLabels[6], position: [0.45, 0.65, 3.95] as const, size: [2.2, 1.32] as const },
+  { label: contentScreenLabels[7], position: [-1.35, 1.75, 5.55] as const, size: [2.25, 1.35] as const },
+  { label: contentScreenLabels[8], position: [-2.55, 0.7, 7.15] as const, size: [2.15, 1.29] as const },
+  { label: contentScreenLabels[9], position: [-2.75, 1.85, 8.85] as const, size: [2.2, 1.32] as const },
+  { label: contentScreenLabels[10], position: [-1.55, 0.85, 10.45] as const, size: [2.15, 1.29] as const },
+  { label: contentScreenLabels[11], position: [0.15, 1.95, 11.85] as const, size: [2.2, 1.32] as const },
+  { label: contentScreenLabels[12], position: [1.75, 0.95, 13.05] as const, size: [2.15, 1.29] as const },
+  { label: contentScreenLabels[13], position: [2.85, 1.85, 14.15] as const, size: [2.2, 1.32] as const },
+  { label: contentScreenLabels[14], position: [3.15, 1.15, 15.25] as const, size: [2.25, 1.35] as const },
+]
 
-  const ribbonB = new CatmullRomCurve3([
-    new Vector3(7.8, 2.6, -5.4),
-    new Vector3(4.1, 0.9, -1.6),
-    new Vector3(0.5, 0.15, 0.15),
-    new Vector3(-2.6, 1.7, 3.4),
-    new Vector3(-4.5, -0.7, 7.0),
-  ], false, 'catmullrom', 0.32)
-
-  const ribbonC = new CatmullRomCurve3([
-    new Vector3(-6.2, -1.9, 2.2),
-    new Vector3(-2.1, 0.5, 1.1),
-    new Vector3(0.15, 2.35, 0),
-    new Vector3(2.6, 0.15, 2.9),
-    new Vector3(5.8, 1.8, 6.4),
-  ], false, 'catmullrom', 0.3)
-
-  const ribbonD = new CatmullRomCurve3([
-    new Vector3(-9.2, 0.4, 4.8),
-    new Vector3(-4.6, 2.8, 2.2),
-    new Vector3(0.2, -0.8, 5.4),
-    new Vector3(4.8, 2.4, 8.6),
-    new Vector3(8.6, 0.2, 3.2),
-  ], false, 'catmullrom', 0.34)
-
-  const ribbonE = new CatmullRomCurve3([
-    new Vector3(2.4, 3.6, -7.2),
-    new Vector3(-1.8, 2.2, -3.4),
-    new Vector3(-5.4, 0.4, 1.6),
-    new Vector3(-1.2, -1.4, 6.8),
-    new Vector3(3.6, 1.2, 11.2),
-  ], false, 'catmullrom', 0.3)
-
-  return [ribbonA, ribbonB, ribbonC, ribbonD, ribbonE]
+/** Dock point under each card — where the spine passes */
+export function cardDock(index: number) {
+  const s = contentScreens[Math.max(0, Math.min(contentScreens.length - 1, index))]
+  return new Vector3(s.position[0], s.position[1] - s.size[1] * 0.5 - 0.18, s.position[2])
 }
 
+/** Cinematic fly-through — same energy, tuned to the staggered gallery */
 export function createCameraPath() {
   return new CatmullRomCurve3(
     [
-      new Vector3(0.22, 4.15, 24.5),
-      new Vector3(-6.8, 2.6, 8.8),
-      new Vector3(-7.4, 1.35, 0.6),
-      new Vector3(-2.8, 0.7, -5.4),
-      new Vector3(1.8, 2.4, -6.2),
-      new Vector3(7.2, 1.5, -0.4),
-      new Vector3(7.6, 0.55, 7.2),
-      new Vector3(2.4, 2.8, 12.4),
-      new Vector3(-4.2, 3.2, 14.6),
-      new Vector3(0.25, 6.4, 22.5),
+      new Vector3(0.15, 3.75, 21.0),
+      new Vector3(-4.4, 2.7, 11.4),
+      new Vector3(-4.9, 1.75, 3.6),
+      new Vector3(-2.2, 1.25, -2.8),
+      new Vector3(1.35, 2.2, -4.0),
+      new Vector3(3.9, 1.85, -0.15),
+      new Vector3(3.15, 1.4, 3.7),
+      new Vector3(0.55, 1.6, 7.3),
+      new Vector3(-2.35, 2.3, 10.7),
+      new Vector3(-0.7, 2.95, 14.9),
+      new Vector3(0.25, 5.2, 20.0),
     ],
     false,
     'catmullrom',
-    0.18,
+    0.2,
   )
 }
 
 export function createLookPath() {
   return new CatmullRomCurve3(
     [
-      new Vector3(0.1, 0.72, 1.2),
-      new Vector3(-6.4, 1.15, -1.6),
-      new Vector3(-3.2, 2.1, -3.8),
-      new Vector3(-0.4, -0.2, -5.6),
-      new Vector3(2.6, 1.4, -4.4),
-      new Vector3(6.2, 1.9, 0.6),
-      new Vector3(7.4, -0.05, 4.6),
-      new Vector3(5.8, 0.55, 9.2),
-      new Vector3(1.2, 2.6, 10.4),
-      new Vector3(-4.6, 1.5, 11.8),
-      new Vector3(0.1, 0.7, 4.2),
+      new Vector3(0.05, 0.95, 1.1),
+      ...contentScreens.map((s) => new Vector3(s.position[0], s.position[1] + 0.08, s.position[2])),
+      new Vector3(0.2, 1.0, 4.0),
     ],
     false,
     'catmullrom',
-    0.18,
+    0.22,
   )
 }
 
-export const openingCameraPosition = [0.22, 4.15, 24.5] as const
+export const openingCameraPosition = [0.15, 3.75, 21.0] as const
 
+export function activeCardLook(progress: number, out: Vector3) {
+  const visual = carouselVisual(progress)
+  const last = contentScreens.length - 1
+  const i0 = Math.min(last, Math.max(0, Math.floor(visual.focus)))
+  const i1 = Math.min(last, i0 + 1)
+  const m = visual.focus - i0
+  const a = contentScreens[i0].position
+  const b = contentScreens[i1].position
+  out.set(
+    a[0] + (b[0] - a[0]) * m,
+    a[1] + (b[1] - a[1]) * m + 0.08,
+    a[2] + (b[2] - a[2]) * m,
+  )
+  return out
+}
+
+/**
+ * Single clean spine through card docks — smooth tension, no zig-zag clutter.
+ */
 export function createCardLinkCurve() {
+  const n = contentScreens.length
+  const docks = Array.from({ length: n }, (_, i) => cardDock(i))
   return new CatmullRomCurve3(
-    contentScreens.map((screen) => new Vector3(screen.position[0], screen.position[1] - 0.55, screen.position[2])),
+    [
+      docks[0].clone().add(new Vector3(0, -0.25, -2.8)),
+      ...docks,
+      docks[n - 1].clone().add(new Vector3(0, -0.2, 3.0)),
+    ],
     false,
     'catmullrom',
-    0.42,
+    0.5,
   )
 }
 
-export const contentScreens = [
-  { label: contentScreenLabels[0], position: [-6.4, 1.15, -1.6] as const, size: [2.2, 1.32] as const },
-  { label: contentScreenLabels[1], position: [-3.2, 2.1, -3.8] as const, size: [2.1, 1.26] as const },
-  { label: contentScreenLabels[2], position: [-0.4, -0.4, -5.6] as const, size: [2.05, 1.22] as const },
-  { label: contentScreenLabels[3], position: [2.6, 1.4, -4.4] as const, size: [2.3, 1.38] as const },
-  { label: contentScreenLabels[4], position: [6.2, 1.9, 0.6] as const, size: [2.1, 1.26] as const },
-  { label: contentScreenLabels[5], position: [6.8, 1.1, 1.8] as const, size: [2.05, 1.22] as const },
-  { label: contentScreenLabels[6], position: [7.1, 0.4, 3.1] as const, size: [2.05, 1.22] as const },
-  { label: contentScreenLabels[7], position: [7.4, -0.2, 4.6] as const, size: [2.1, 1.26] as const },
-  { label: contentScreenLabels[8], position: [6.6, 0.2, 6.8] as const, size: [2.0, 1.2] as const },
-  { label: contentScreenLabels[9], position: [5.8, 0.55, 9.2] as const, size: [2.15, 1.3] as const },
-  { label: contentScreenLabels[10], position: [1.2, 2.6, 10.4] as const, size: [1.95, 1.16] as const },
-  { label: contentScreenLabels[11], position: [-4.6, 1.5, 11.8] as const, size: [2.1, 1.26] as const },
-  { label: contentScreenLabels[12], position: [-5.2, 2.0, 13.2] as const, size: [2.0, 1.2] as const },
-  { label: contentScreenLabels[13], position: [-3.8, 2.4, 14.6] as const, size: [2.05, 1.22] as const },
-  { label: contentScreenLabels[14], position: [-1.2, 2.8, 15.4] as const, size: [2.1, 1.26] as const },
-]
+/**
+ * Clean companion ribbons — same smooth spine language, spaced offsets.
+ * Returns several so the scene can pick a balanced set.
+ */
+export function createFlowCurves() {
+  const spine = createCardLinkCurve()
+  const makeOffset = (lateral: number, lift: number, scaleX = 1, phase = 0) => {
+    const steps = 24
+    const pts: Vector3[] = []
+    for (let i = 0; i <= steps; i += 1) {
+      const u = i / steps
+      const p = spine.getPoint(u)
+      const t = spine.getTangent(u)
+      const side = new Vector3(-t.z, 0, t.x)
+      if (side.lengthSq() > 0.0001) side.normalize()
+      else side.set(1, 0, 0)
+      const wave = Math.sin(u * Math.PI * 2 + phase) * 0.18
+      pts.push(new Vector3(
+        p.x * scaleX + side.x * (lateral + wave),
+        p.y + lift,
+        p.z + side.z * (lateral + wave),
+      ))
+    }
+    return new CatmullRomCurve3(pts, false, 'catmullrom', 0.48)
+  }
+
+  return [
+    makeOffset(-1.55, 0.35, 1, 0.2),   // left parallel
+    makeOffset(1.65, -0.25, 1, 1.1),  // right parallel
+    makeOffset(0.15, -1.55, 0.7, 0.6), // soft underglow
+    makeOffset(-2.4, 1.1, 1.05, 2.0),  // high outer left
+    makeOffset(2.5, 0.85, 1.05, 2.6),  // high outer right
+  ]
+}
 
 export const channelScreens = channels.map((channel, index) => {
   const angle = (index / channels.length) * Math.PI * 2
   return {
     label: channel.name,
     platform: channel.platform,
-    position: [Math.cos(angle) * 5.8, Math.sin(angle * 1.4) * 1.85, 3.2 + Math.sin(angle) * 2.6] as const,
+    position: [Math.cos(angle) * 8.4, Math.sin(angle * 1.4) * 2.5, 1.8 + Math.sin(angle) * 3.8] as const,
   }
 })

@@ -1,6 +1,6 @@
 import { voiceThemes } from '../../data/voices'
 import { SectionHeading } from '../layout/SectionHeading'
-import { TestimonialPlaceholder } from '../ui/TestimonialPlaceholder'
+import { VoiceQuote } from '../ui/VoiceQuote'
 import { DragStrip } from '../ui/DragStrip'
 import { Reveal } from '../animation/Reveal'
 
@@ -11,10 +11,10 @@ export function VoicesSection() {
         <SectionHeading kicker="Voices" title="The people stay behind the work." />
       </div>
       <Reveal>
-        <DragStrip ariaLabel="Team story placeholders" className="voice-strip">
-          {voiceThemes.map((voice) => (
+        <DragStrip ariaLabel="Team stories" className="voice-strip">
+          {voiceThemes.map((voice, index) => (
             <div key={voice.id} className="voice-strip__item">
-              <TestimonialPlaceholder voice={voice} focused />
+              <VoiceQuote voice={voice} index={index} />
             </div>
           ))}
         </DragStrip>

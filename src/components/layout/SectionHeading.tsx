@@ -1,3 +1,5 @@
+import { MaskTitle } from '../animation/MaskTitle'
+
 type SectionHeadingProps = {
   kicker?: string
   title: string
@@ -6,12 +8,11 @@ type SectionHeadingProps = {
 }
 
 export function SectionHeading({ kicker, title, body, as = 'h2' }: SectionHeadingProps) {
-  const Heading = as
   return (
     <header className="section-heading">
       <div>
         {kicker ? <p className="section-heading__kicker">{kicker}</p> : null}
-        <Heading>{title}</Heading>
+        <MaskTitle text={title} as={as} />
       </div>
       {body ? <p>{body}</p> : <div className="heading-mark" aria-hidden="true" />}
     </header>

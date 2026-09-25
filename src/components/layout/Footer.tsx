@@ -1,17 +1,18 @@
 import { useState } from 'react'
 import type { FormEvent } from 'react'
 import { Link } from 'react-router-dom'
-import { ArrowUp } from 'lucide-react'
-import { channelsForPlatform, platformLabels, platformOrder } from '../../data/channels'
+import { ArrowUp, Volume2, VolumeX } from 'lucide-react'
 import { companyFacts } from '../../data/company'
 import { inboxEmail, inboxReady } from '../../data/inbox'
 import { navItems } from '../../data/navigation'
 import { useLenisInstance } from '../../hooks/useLenisInstance'
+import { useUiSound } from '../../hooks/useUiSound'
 import { BrandLogo } from '../ui/BrandLogo'
 import { MagneticButton } from '../animation/MagneticButton'
 
 export function Footer() {
   const lenis = useLenisInstance()
+  const { enabled, toggle } = useUiSound()
   const [newsletter, setNewsletter] = useState<'idle' | 'done'>('idle')
   const year = new Date().getFullYear()
   const studioEmail = inboxEmail()
@@ -75,26 +76,23 @@ export function Footer() {
           )}
         </div>
       </div>
-      <div className="footer__owned">
-        <h2>Owned pages</h2>
-        <div className="footer__pages">
-          {platformOrder.map((platform) => (
-            <div key={platform} className="footer__page-group">
-              <strong>{platformLabels[platform]}</strong>
-              {channelsForPlatform(platform).map((channel) => (
-                <a key={channel.id} href={channel.url} target="_blank" rel="noopener noreferrer">
-                  {channel.name}
-                </a>
-              ))}
-            </div>
-          ))}
-        </div>
-      </div>
       <div className="footer__base">
         <p>© {year} Accelera Flow LTD. All rights reserved.</p>
-        <button type="button" className="back-to-top" onClick={toTop}>
-          Back to top <ArrowUp size={14} />
-        </button>
+        <div className="footer__base-actions">
+          <button
+            type="button"
+            className={`sound-toggle${enabled ? ' is-on' : ''}`}
+            onClick={toggle}
+            aria-pressed={enabled}
+            aria-label={enabled ? 'Mute UI sounds' : 'Enable UI sounds'}
+          >
+            {enabled ? <Volume2 size={14} /> : <VolumeX size={14} />}
+            <span>{enabled ? 'Sound on' : 'Sound off'}</span>
+          </button>
+          <button type="button" className="back-to-top" onClick={toTop}>
+            Back to top <ArrowUp size={14} />
+          </button>
+        </div>
       </div>
     </footer>
   )

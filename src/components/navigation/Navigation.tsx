@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useState } from 'react'
 import { NavLink } from 'react-router-dom'
-import { Menu } from 'lucide-react'
+import { Menu, X } from 'lucide-react'
 import { navItems, primaryCta, promoteCta } from '../../data/navigation'
 import { BrandLogo } from '../ui/BrandLogo'
 import { MagneticButton } from '../animation/MagneticButton'
@@ -10,6 +10,7 @@ export function Navigation() {
   const [compact, setCompact] = useState(false)
   const [open, setOpen] = useState(false)
   const closeMenu = useCallback(() => setOpen(false), [])
+  const toggleMenu = useCallback(() => setOpen((value) => !value), [])
 
   useEffect(() => {
     const onScroll = () => setCompact(window.scrollY > 24)
@@ -17,9 +18,17 @@ export function Navigation() {
     return () => window.removeEventListener('scroll', onScroll)
   }, [])
 
+  useEffect(() => {
+    const onResize = () => {
+      if (window.matchMedia('(min-width: 1025px)').matches) setOpen(false)
+    }
+    window.addEventListener('resize', onResize)
+    return () => window.removeEventListener('resize', onResize)
+  }, [])
+
   return (
     <>
-      <header className={`nav${compact ? ' is-compact' : ''}`}>
+      <header className={`nav${compact ? ' is-compact' : ''}${open ? ' is-menu-open' : ''}`}>
         <div className="nav__bar">
           <NavLink to="/" className="nav__logo" aria-label="Accelera Flow LTD home">
             <BrandLogo />
@@ -46,12 +55,12 @@ export function Navigation() {
           </div>
           <button
             type="button"
-            className="nav__menu-btn"
-            aria-label="Open menu"
+            className={`nav__menu-btn${open ? ' is-open' : ''}`}
+            aria-label={open ? 'Close menu' : 'Open menu'}
             aria-expanded={open}
-            onClick={() => setOpen(true)}
+            onClick={toggleMenu}
           >
-            <Menu size={18} />
+            {open ? <X size={18} /> : <Menu size={18} />}
           </button>
         </div>
       </header>

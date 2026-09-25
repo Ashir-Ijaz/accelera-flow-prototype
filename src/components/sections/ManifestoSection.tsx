@@ -2,6 +2,7 @@ import { campaign } from '../../data/company'
 import { media } from '../../data/media'
 import { DummyImage } from '../ui/DummyImage'
 import { Reveal } from '../animation/Reveal'
+import { ImageWipe } from '../animation/ImageWipe'
 
 export function ManifestoSection() {
   return (
@@ -20,7 +21,9 @@ export function ManifestoSection() {
           </p>
         </div>
         <div className="hero-visual">
-          <DummyImage src={media.flow} className="hero-visual__image" />
+          <ImageWipe direction="left" delay={0.06}>
+            <DummyImage src={media.flow} className="hero-visual__image" />
+          </ImageWipe>
         </div>
       </Reveal>
     </section>

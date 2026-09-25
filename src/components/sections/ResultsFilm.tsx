@@ -18,15 +18,16 @@ type ResultsFilmProps = {
 }
 
 function framePose(offset: number, mobile: boolean) {
-  const spread = mobile ? 10.4 : 16.4
+  const spread = mobile ? 9.2 : 12.8
+  const bias = mobile ? -2.4 : -5.6
   const abs = Math.abs(offset)
   const incoming = offset > 0
   return {
-    x: offset * spread,
-        y: incoming ? abs * 6 : abs * -5,
-        rotate: Math.max(-10, Math.min(10, offset * (mobile ? -5 : -6))),
-        scale: Math.max(0.86, 1 - abs * 0.1),
-        opacity: abs > 1.4 ? 0 : Math.max(0, 1 - abs * 0.3),
+    x: offset * spread + bias,
+    y: incoming ? abs * 5.2 : abs * -4.2,
+    rotate: Math.max(-9, Math.min(9, offset * (mobile ? -4.4 : -5.2))),
+    scale: Math.max(0.84, 1 - abs * 0.085),
+    opacity: abs > 2.35 ? 0 : Math.max(0, 1 - abs * 0.26),
     z: Math.round(48 - abs * 8),
   }
 }
@@ -51,15 +52,25 @@ export function ResultsFilm({ items, compact = false, lead }: ResultsFilmProps) 
     const paint = (progress: number) => {
       const max = Math.max(1, items.length - 1)
       const position = progress * max
-      items.forEach((_, index) => {
+      for (let index = 0; index < items.length; index += 1) {
         const node = framesRef.current[index]
-        if (!node) return
-        const next = framePose(index - position, isMobile)
+        if (!node) continue
+        const offset = index - position
+        if (Math.abs(offset) > 2.4) {
+          if (node.style.visibility !== 'hidden') {
+            node.style.visibility = 'hidden'
+            node.style.opacity = '0'
+            node.style.pointerEvents = 'none'
+          }
+          continue
+        }
+        const next = framePose(offset, isMobile)
+        node.style.visibility = next.opacity < 0.04 ? 'hidden' : 'visible'
         node.style.opacity = String(next.opacity)
         node.style.zIndex = String(next.z)
         node.style.pointerEvents = next.opacity < 0.08 ? 'none' : 'auto'
         node.style.transform = `translate3d(calc(-50% + ${next.x}rem), calc(-50% + ${next.y}%), 0) rotateY(${next.rotate}deg) scale(${next.scale})`
-      })
+      }
       if (fillRef.current) {
         fillRef.current.style.transform = `scaleX(${progress})`
       }
@@ -79,7 +90,7 @@ export function ResultsFilm({ items, compact = false, lead }: ResultsFilmProps) 
         trigger: section,
         start: 'top top',
         end: 'bottom bottom',
-        scrub: 0.42,
+        scrub: true,
         invalidateOnRefresh: true,
         onUpdate: (self) => paint(self.progress),
       })
@@ -147,13 +158,13 @@ export function ResultsFilm({ items, compact = false, lead }: ResultsFilmProps) 
           </div>
           <div className="results-reel__top-end">
             <p className="results-reel__count">
-              <AnimatePresence mode="wait" initial={false}>
+              <AnimatePresence initial={false}>
                 <motion.span
                   key={current.id}
-                  initial={{ opacity: 0, y: 8 }}
+                  initial={{ opacity: 0, y: 6 }}
                   animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: -8 }}
-                  transition={{ duration: 0.32, ease }}
+                  exit={{ opacity: 0, y: -6, position: 'absolute' }}
+                  transition={{ duration: 0.45, ease }}
                 >
                   {String(active + 1).padStart(2, '0')}
                 </motion.span>
@@ -181,7 +192,12 @@ export function ResultsFilm({ items, compact = false, lead }: ResultsFilmProps) 
               aria-current={index === active}
             >
               <span className="results-reel__plate">
-                <DummyImage className="results-reel__shot" src={item.visual} alt="" loading="eager" />
+                <DummyImage
+                  className="results-reel__shot"
+                  src={item.visual}
+                  alt=""
+                  loading={index < 2 ? 'eager' : 'lazy'}
+                />
               </span>
             </button>
           ))}
@@ -189,13 +205,13 @@ export function ResultsFilm({ items, compact = false, lead }: ResultsFilmProps) 
 
         <div className="results-reel__foot">
           <div className="results-reel__copy">
-            <AnimatePresence mode="wait" initial={false}>
+            <AnimatePresence initial={false}>
               <motion.div
                 key={current.id}
-                initial={{ opacity: 0, y: 14 }}
+                initial={{ opacity: 0, y: 12 }}
                 animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -10 }}
-                transition={{ duration: 0.4, ease }}
+                exit={{ opacity: 0, y: -8, position: 'absolute', left: 0, right: 0, top: 0 }}
+                transition={{ duration: 0.52, ease }}
               >
                 <motion.small
                   initial={{ opacity: 0 }}

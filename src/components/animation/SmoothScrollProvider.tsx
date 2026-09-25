@@ -9,7 +9,7 @@ import type { LenisApi } from '../../hooks/useLenisInstance'
 import { usePrefersReducedMotion } from '../../hooks/usePrefersReducedMotion'
 
 gsap.registerPlugin(ScrollTrigger)
-ScrollTrigger.config({ ignoreMobileResize: true })
+ScrollTrigger.config({ ignoreMobileResize: true, autoRefreshEvents: 'visibilitychange,DOMContentLoaded,load' })
 
 type SmoothScrollProviderProps = {
   children: ReactNode
@@ -38,8 +38,12 @@ export function SmoothScrollProvider({ children }: SmoothScrollProviderProps) {
 
     const instance = new Lenis({
       autoRaf: false,
-      duration: 0.78,
+      duration: 0.72,
+      easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
       smoothWheel: true,
+      syncTouch: false,
+      wheelMultiplier: 1,
+      touchMultiplier: 1.2,
     })
 
     lenisRef.current = instance
@@ -50,14 +54,19 @@ export function SmoothScrollProvider({ children }: SmoothScrollProviderProps) {
     }
 
     gsap.ticker.add(tick)
-    gsap.ticker.lagSmoothing(1000, 16)
+    gsap.ticker.lagSmoothing(0)
 
-    const refresh = () => ScrollTrigger.refresh()
+    let refreshTimer = 0
+    const refresh = () => {
+      window.clearTimeout(refreshTimer)
+      refreshTimer = window.setTimeout(() => ScrollTrigger.refresh(), 80)
+    }
     window.addEventListener('load', refresh)
     void document.fonts.ready.then(refresh)
 
     return () => {
       window.removeEventListener('load', refresh)
+      window.clearTimeout(refreshTimer)
       gsap.ticker.remove(tick)
       instance.destroy()
       lenisRef.current = null

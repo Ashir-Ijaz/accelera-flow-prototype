@@ -2,6 +2,7 @@ import { asset } from '../lib/paths'
 import type { NavItem } from '../types'
 
 export const LOGO_SRC = asset('/brand/accelera-flow-clear.png')
+export const LOGO_MARK_SRC = asset('/brand/accelera-flow-a.png')
 export const LOGO_ALT = 'Accelera Flow LTD'
 
 export const COMPANY_NAME = 'Accelera Flow LTD'

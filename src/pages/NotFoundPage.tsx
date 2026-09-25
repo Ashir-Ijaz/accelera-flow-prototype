@@ -1,4 +1,3 @@
-import { Link } from 'react-router-dom'
 import { pageMeta } from '../data/meta'
 import { useDocumentMeta } from '../hooks/useDocumentMeta'
 import { MagneticButton } from '../components/animation/MagneticButton'
@@ -16,9 +15,9 @@ export default function NotFoundPage() {
           <h1>This idea took a wrong turn.</h1>
           <div className="stage-copy__actions">
             <MagneticButton to="/">Back home</MagneticButton>
-            <Link className="btn btn--ghost" to="/brands">
+            <MagneticButton to="/brands" className="btn btn--ghost">
               Explore brands
-            </Link>
+            </MagneticButton>
           </div>
         </div>
         <div className="hero-visual">

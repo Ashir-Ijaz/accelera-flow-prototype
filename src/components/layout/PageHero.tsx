@@ -2,6 +2,8 @@ import type { ReactNode } from 'react'
 import { DummyImage } from '../ui/DummyImage'
 import { media } from '../../data/media'
 import type { VisualTone } from '../ui/ThemeVisual'
+import { MaskTitle } from '../animation/MaskTitle'
+import { ImageWipe } from '../animation/ImageWipe'
 
 const toneImage: Record<VisualTone, string> = {
   flow: media.flow,
@@ -39,15 +41,17 @@ export function PageHero({
         <div className="split">
           <div>
             <p className="section-heading__kicker">{kicker}</p>
-            <h1>{title}</h1>
+            <MaskTitle text={title} as="h1" />
             {body ? <p className="lede">{body}</p> : null}
           </div>
           <aside className="hero-visual">
-            <DummyImage
-              src={visual ?? toneImage[tone]}
-              className="hero-visual__image"
-              loading={visual ? 'eager' : 'lazy'}
-            />
+            <ImageWipe direction="left" delay={0.08}>
+              <DummyImage
+                src={visual ?? toneImage[tone]}
+                className="hero-visual__image"
+                loading={visual ? 'eager' : 'lazy'}
+              />
+            </ImageWipe>
             <span>{asideLabel}</span>
           </aside>
         </div>

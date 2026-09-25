@@ -1,5 +1,7 @@
 import { asset } from '../lib/paths'
 
+const V = 12
+
 export const media = {
   stage: asset('/media/stage.webp'),
   gradient: asset('/media/gradient.webp'),
@@ -12,6 +14,7 @@ export const media = {
   pulse: asset('/media/pulse.webp'),
   structure: asset('/media/structure.webp'),
   finalCta: `${asset('/media/final-cta.webp')}?v=1`,
+  brandsEcosystem: `${asset('/media/brands-ecosystem.webp')}?v=${V}`,
 } as const
 
 export type BrandBanner = {
@@ -24,11 +27,21 @@ export type BrandBanner = {
 
 function banner(name: string, homePoster = false): BrandBanner {
   return {
-    src: `${asset(`/media/real/brands/${name}.webp`)}?v=6`,
-    card: `${asset(`/media/real/brands/${name}-place-card.webp`)}?v=6`,
-    stage: `${asset(`/media/real/brands/${homePoster ? `${name}-home` : name}.webp`)}?v=6`,
-    width: 1400,
-    height: 933,
+    src: `${asset(`/media/real/brands/${name}.webp`)}?v=${V}`,
+    card: `${asset(`/media/real/brands/${name}-place-card.webp`)}?v=${V}`,
+    stage: `${asset(`/media/real/brands/${homePoster ? `${name}-home` : name}.webp`)}?v=${V}`,
+    width: 1600,
+    height: 900,
+  }
+}
+
+function namedBanner(base: string, placeCard: string): BrandBanner {
+  return {
+    src: `${asset(`/media/real/brands/${base}.webp`)}?v=${V}`,
+    card: `${asset(`/media/real/brands/${placeCard}.webp`)}?v=${V}`,
+    stage: `${asset(`/media/real/brands/${base}.webp`)}?v=${V}`,
+    width: 1600,
+    height: 900,
   }
 }
 
@@ -40,16 +53,19 @@ export const brandBanners = {
   rebootWithAsh: banner('reboot-with-ash', true),
   anonhabit: banner('anonhabit', true),
   cyzmify: banner('cyzmify'),
-  guideTechPro: banner('guidetechpro'),
-  iQuickFixer: banner('iquickfixer'),
+  guideTechPro: banner('guidetechpro', true),
+  iQuickFixer: banner('iquickfixer', true),
+  xenThoughts: banner('xen-thoughts'),
   fallback: banner('fallback', true),
+  wealthWhizzFb: namedBanner('wealth-whizz-fb', 'wealth-whizz-fb-place-card'),
+  neuromatrixFb: namedBanner('neuromatrix-fb', 'neuromatrix-fb-place-card'),
 } as const
 
 export const channelBanners: Record<string, BrandBanner> = {
   'wealth-whizz': brandBanners.wealthWhizz,
   'wifi-imoney': brandBanners.wifiMoney,
   'mindset-thoughts-life': brandBanners.mindsetThoughts,
-  'xen-thoughts': brandBanners.fallback,
+  'xen-thoughts': brandBanners.xenThoughts,
   neuromatrix: brandBanners.neuromatrix,
   anonhabit: brandBanners.anonhabit,
   'reboot-with-ash': brandBanners.rebootWithAsh,
@@ -58,8 +74,8 @@ export const channelBanners: Record<string, BrandBanner> = {
   iquickfixer: brandBanners.iQuickFixer,
   'neuromatrix-tiktok': brandBanners.neuromatrix,
   'wealth-whizz-tiktok': brandBanners.wealthWhizz,
-  'facebook-one': brandBanners.wealthWhizz,
-  'facebook-two': brandBanners.neuromatrix,
+  'facebook-one': brandBanners.wealthWhizzFb,
+  'facebook-two': brandBanners.neuromatrixFb,
 }
 
 export const channelMedia: Record<string, string> = Object.fromEntries(
@@ -67,11 +83,11 @@ export const channelMedia: Record<string, string> = Object.fromEntries(
 )
 
 export const serviceMedia: Record<string, string> = {
-  'instagram-page-management': `${asset('/media/real/services/instagram-page.webp')}?v=3`,
-  'content-creation': `${asset('/media/real/services/content-creation.webp')}?v=3`,
-  'dm-management': `${asset('/media/real/services/dm-management.webp')}?v=3`,
-  'cold-outreach': `${asset('/media/real/services/cold-outreach.webp')}?v=3`,
-  clipping: `${asset('/media/real/services/clipping.webp')}?v=3`,
+  'instagram-page-management': `${asset('/media/real/services/instagram-page.webp')}?v=10`,
+  'content-creation': `${asset('/media/real/services/content-creation.webp')}?v=5`,
+  'dm-management': `${asset('/media/real/services/dm-management.webp')}?v=11`,
+  'cold-outreach': `${asset('/media/real/services/cold-outreach.webp')}?v=5`,
+  clipping: `${asset('/media/real/services/clipping.webp')}?v=11`,
 }
 
 export const teamMedia = {
@@ -87,21 +103,21 @@ export const teamMedia = {
 } as const
 
 export const resultMedia = {
-  sprintMillionaires: `${asset('/media/real/results/IMG_0230.webp')}?v=1`,
-  followersThirty: `${asset('/media/real/results/IMG_0446.webp')}?v=1`,
-  followersSeven: `${asset('/media/real/results/IMG_0471.webp')}?v=1`,
-  sprintReach: `${asset('/media/real/results/IMG_0672.webp')}?v=1`,
-  vyriumReach: `${asset('/media/real/results/IMG_6940-page.webp')}?v=2`,
-  vyriumViews: `${asset('/media/real/results/IMG_7073-page.webp')}?v=2`,
-  millionairesLuxuries: `${asset('/media/real/results/IMG_7090.webp')}?v=1`,
-  dashboardJul: `${asset('/media/real/results/IMG_8431.webp')}?v=1`,
-  growthAug: `${asset('/media/real/results/IMG_9249-page.webp')}?v=2`,
-  theluxuriousdoze: `${asset('/media/real/results/IMG_9943.webp')}?v=1`,
-  luxedoze: `${asset('/media/real/results/IMG_9944.webp')}?v=1`,
-  ytViewsA: `${asset('/media/real/results/yt-01.webp')}?v=2`,
-  ytViewsB: `${asset('/media/real/results/yt-02.webp')}?v=2`,
-  ytViewsC: `${asset('/media/real/results/yt-03.webp')}?v=2`,
-  ytSubsJune: `${asset('/media/real/results/yt-04.webp')}?v=2`,
-  ytChannelNinety: `${asset('/media/real/results/yt-05.webp')}?v=2`,
-  ytViewsD: `${asset('/media/real/results/yt-06.webp')}?v=2`,
+  sprintMillionaires: `${asset('/media/real/results/IMG_0230.webp')}?v=3`,
+  followersThirty: `${asset('/media/real/results/IMG_0446.webp')}?v=3`,
+  followersSeven: `${asset('/media/real/results/IMG_0471.webp')}?v=3`,
+  sprintReach: `${asset('/media/real/results/IMG_0672.webp')}?v=3`,
+  vyriumReach: `${asset('/media/real/results/IMG_6940-page.webp')}?v=3`,
+  vyriumViews: `${asset('/media/real/results/IMG_7073-page.webp')}?v=3`,
+  millionairesLuxuries: `${asset('/media/real/results/IMG_7090.webp')}?v=3`,
+  dashboardJul: `${asset('/media/real/results/IMG_8431.webp')}?v=3`,
+  growthAug: `${asset('/media/real/results/IMG_9249-page.webp')}?v=3`,
+  theluxuriousdoze: `${asset('/media/real/results/IMG_9943.webp')}?v=3`,
+  luxedoze: `${asset('/media/real/results/IMG_9944.webp')}?v=3`,
+  ytViewsA: `${asset('/media/real/results/yt-01.webp')}?v=3`,
+  ytViewsB: `${asset('/media/real/results/yt-02.webp')}?v=3`,
+  ytViewsC: `${asset('/media/real/results/yt-03.webp')}?v=3`,
+  ytSubsJune: `${asset('/media/real/results/yt-04.webp')}?v=3`,
+  ytChannelNinety: `${asset('/media/real/results/yt-05.webp')}?v=3`,
+  ytViewsD: `${asset('/media/real/results/yt-06.webp')}?v=3`,
 } as const

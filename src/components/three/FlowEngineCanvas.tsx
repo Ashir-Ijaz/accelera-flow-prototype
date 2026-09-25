@@ -19,7 +19,7 @@ export function FlowEngineCanvas({
   return (
     <div className="flow-engine__canvas" aria-hidden="true">
       <Canvas
-        dpr={isMobile ? 1 : [1, 1.15]}
+        dpr={isMobile ? 1 : [1, 1.1]}
         gl={{
           antialias: false,
           alpha: false,
@@ -29,8 +29,8 @@ export function FlowEngineCanvas({
           toneMappingExposure: 1.45,
         }}
         camera={{ fov: 48, near: 0.1, far: 140, position: [...openingCameraPosition] }}
-        frameloop={active ? 'always' : 'demand'}
-        performance={{ min: 0.6, max: 1, debounce: 200 }}
+        frameloop={active ? 'always' : 'never'}
+        performance={{ min: 0.5, max: 1, debounce: 160 }}
         style={{ pointerEvents: 'none', width: '100%', height: '100%', display: 'block' }}
       >
         <FlowEngineScene

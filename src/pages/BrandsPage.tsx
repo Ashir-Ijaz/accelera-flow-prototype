@@ -1,5 +1,6 @@
 import { useMemo, useState } from 'react'
 import { channels, channelsForPlatform, platformLabels, platformOrder } from '../data/channels'
+import { media } from '../data/media'
 import { pageMeta } from '../data/meta'
 import { useDocumentMeta } from '../hooks/useDocumentMeta'
 import { ChannelCard } from '../components/ui/ChannelCard'
@@ -18,7 +19,13 @@ export default function BrandsPage() {
   )
 
   return (
-    <PageHero kicker="Owned channels" title="Owned pages. One faceless system." asideLabel="Channels" tone="ember">
+    <PageHero
+      kicker="Owned channels"
+      title="Owned pages. One faceless system."
+      asideLabel="Channels"
+      tone="ember"
+      visual={media.brandsEcosystem}
+    >
       <div className="search-row">
         {(['all', ...platformOrder] as const).map((value) => (
           <button
